@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+        <Title>LinkComposer.SourceGenerator</Title>
+        <Authors>Tomas Pelak</Authors>
+        <Description>SourceGenerator for generating controllers that can be then found and translate to url</Description>
+        <PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
+        <IsPackable>true</IsPackable>
+        <PackageVersion>0.0.2</PackageVersion>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
+	</ItemGroup>
+
+</Project>
