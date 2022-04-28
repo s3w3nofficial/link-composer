@@ -70,7 +70,7 @@ namespace LinkComposer
 
             foreach (var parameter in parameters)
             {
-                if (parameter.Value is ValueType)
+                if (parameter.Value is ValueType || parameter.Value is string)
                     queryParameters.Add(parameter.Key, parameter.Value);
                 else
                 {

@@ -20,7 +20,7 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
             return new
             {
                 Test = test,
-                Navigation = _linkComposer.Link<HomePageControllerLink>(x => x.Navigation()),
+                Navigation = _linkComposer.Link<HomePageControllerLink>(x => x.Navigation("ahoj")),
             };
         }
 
@@ -61,6 +61,15 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
             return new
             {
                 PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.PostBody())
+            };
+        }
+
+        [HttpPost("postPath/{path}", Name = nameof(PostPath))]
+        public object PostPath([FromQuery] Uri path)
+        {
+            return new
+            {
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.PostPath(path))
             };
         }
     }

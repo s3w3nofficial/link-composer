@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -36,6 +35,7 @@ namespace LinkComposer.SourceGenerator
             if (controllerRouteAttribute is null)
                 controllerRouteAttribute = node.AttributeLists.FirstOrDefault(a => a.ToString().StartsWith("[Route("));
 
+            // TODO remove this
             ControllerRouteAttributeValue = controllerRouteAttribute?.Attributes.FirstOrDefault()?.ArgumentList?.Arguments.FirstOrDefault()?.ToFullString()
                 .Replace("\"", "")
                 .Replace("[controller]", node.Identifier.ToString().Replace("Controller", ""));
@@ -43,6 +43,7 @@ namespace LinkComposer.SourceGenerator
             base.VisitClassDeclaration(node);
 
             var nsUsings = SyntaxFactory.List<UsingDirectiveSyntax>()
+                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("System")))
                 .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("LinkComposer.Attributes")));
 
             var nsMembers = SyntaxFactory.List<MemberDeclarationSyntax>()
@@ -82,7 +83,8 @@ namespace LinkComposer.SourceGenerator
                         return false;
 
                     if (!_semanticModel.GetTypeInfo(ap.Type).Type.IsValueType 
-                        && _semanticModel.GetTypeInfo(ap.Type).Type.SpecialType != SpecialType.System_String)
+                        && _semanticModel.GetTypeInfo(ap.Type).Type.SpecialType != SpecialType.System_String
+                        && _semanticModel.GetTypeInfo(ap.Type).Type.ContainingNamespace.Name != "System")
                     {
                         if (ap.AttributeLists.Any(a => a.ToString().Contains("[FromQuery]")))
                         {

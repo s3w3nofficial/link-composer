@@ -5,6 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<OutputType>Library</OutputType>
+	<Title>LinkComposer</Title>
+	<Authors>Tomas Pelak</Authors>
+	<Description>LinkComposer common models, tools and helpers</Description>
+	<PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
+	<IsPackable>true</IsPackable>
+	<PackageVersion>0.0.1</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
