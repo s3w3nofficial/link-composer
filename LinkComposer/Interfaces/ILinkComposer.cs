@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace LinkComposer.Interfaces
 {

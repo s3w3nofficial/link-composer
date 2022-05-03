@@ -86,7 +86,8 @@ namespace LinkComposer.SourceGenerator
                         && _semanticModel.GetTypeInfo(ap.Type).Type.SpecialType != SpecialType.System_String
                         && _semanticModel.GetTypeInfo(ap.Type).Type.ContainingNamespace.Name != "System")
                     {
-                        if (ap.AttributeLists.Any(a => a.ToString().Contains("[FromQuery]")))
+                        if (ap.AttributeLists
+                            .Any(a => a.ToString().Contains("[FromQuery]") || a.ToFullString().Contains("[FromUri]")))
                         {
                             var parameter = _semanticModel.GetDeclaredSymbol(ap);
                             var properties = parameter.Type

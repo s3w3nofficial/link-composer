@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32014.148
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkComposer.SourceGenerator", "LinkComposer.SourceGenerator\LinkComposer.SourceGenerator.csproj", "{23293142-EC73-4CC6-88C9-B17911D68C83}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkComposer.AspNetCore.Sample", "LinkComposer.AspNetCore.Sample\LinkComposer.AspNetCore.Sample.csproj", "{DA13A7E9-DD34-40FE-B4B2-97EB736AC98F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkComposer", "LinkComposer\LinkComposer.csproj", "{6A3A714F-AFB2-466C-9F06-56D6690881F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkComposer", "LinkComposer\LinkComposer.csproj", "{6A3A714F-AFB2-466C-9F06-56D6690881F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkComposer.AspNetCore", "LinkComposer.AspNetCore\LinkComposer.AspNetCore.csproj", "{9C026F0C-4AB2-44CB-A42D-FDB9155E5D0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkComposer.AspNetCore", "LinkComposer.AspNetCore\LinkComposer.AspNetCore.csproj", "{9C026F0C-4AB2-44CB-A42D-FDB9155E5D0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkComposer.AspNet.Sample", "LinkComposer.AspNet.Sample\LinkComposer.AspNet.Sample.csproj", "{9A0CC410-5DC6-431E-96AF-2F2A9AB50E86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{9C026F0C-4AB2-44CB-A42D-FDB9155E5D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C026F0C-4AB2-44CB-A42D-FDB9155E5D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C026F0C-4AB2-44CB-A42D-FDB9155E5D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A0CC410-5DC6-431E-96AF-2F2A9AB50E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0CC410-5DC6-431E-96AF-2F2A9AB50E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A0CC410-5DC6-431E-96AF-2F2A9AB50E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0CC410-5DC6-431E-96AF-2F2A9AB50E86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

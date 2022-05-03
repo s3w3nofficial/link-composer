@@ -1,4 +1,6 @@
-﻿namespace LinkComposer.Attributes
+﻿using System;
+
+namespace LinkComposer.Attributes
 {
     public class LinkComposerProjectInfoAttribute : Attribute
     {

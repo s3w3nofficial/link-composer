@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System.Diagnostics;
 
 namespace LinkComposer.SourceGenerator
 {
@@ -13,6 +14,15 @@ namespace LinkComposer.SourceGenerator
 
         public void Execute(GeneratorExecutionContext context)
         {
+#if DEBUG
+            if (!Debugger.IsAttached)
+            {
+                Debugger.Launch();
+            }
+#endif
+
+            Debug.WriteLine("Execute code generator");
+
             var syntaxTrees = context.Compilation.SyntaxTrees;
 
             foreach (var syntaxTree in syntaxTrees)

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -9,7 +9,7 @@
         <PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
         <RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.0.4</PackageVersion>
+        <PackageVersion>0.0.5</PackageVersion>
         <IncludeBuildOutput>false</IncludeBuildOutput>
 	</PropertyGroup>
 
@@ -23,6 +23,10 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\LinkComposer\LinkComposer.csproj" />
 	</ItemGroup>
 
 </Project>
