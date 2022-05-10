@@ -15,10 +15,12 @@ namespace LinkComposer.SourceGenerator
         public void Execute(GeneratorExecutionContext context)
         {
 #if DEBUG
+            /*
             if (!Debugger.IsAttached)
             {
                 Debugger.Launch();
             }
+            */
 #endif
 
             Debug.WriteLine("Execute code generator");

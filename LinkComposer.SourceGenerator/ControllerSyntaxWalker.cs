@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -35,15 +36,11 @@ namespace LinkComposer.SourceGenerator
             if (controllerRouteAttribute is null)
                 controllerRouteAttribute = node.AttributeLists.FirstOrDefault(a => a.ToString().StartsWith("[Route("));
 
-            // TODO remove this
-            ControllerRouteAttributeValue = controllerRouteAttribute?.Attributes.FirstOrDefault()?.ArgumentList?.Arguments.FirstOrDefault()?.ToFullString()
-                .Replace("\"", "")
-                .Replace("[controller]", node.Identifier.ToString().Replace("Controller", ""));
-
             base.VisitClassDeclaration(node);
 
             var nsUsings = SyntaxFactory.List<UsingDirectiveSyntax>()
                 .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("System")))
+                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("System.Collections.Generic")))
                 .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("LinkComposer.Attributes")));
 
             var nsMembers = SyntaxFactory.List<MemberDeclarationSyntax>()
@@ -62,7 +59,7 @@ namespace LinkComposer.SourceGenerator
             var httpAttribute = attributes.FirstOrDefault(a => a.ToString().StartsWith("[Http"));
 
             if (httpAttribute == null)
-                return; 
+                return;
 
             var routeAttribute = attributes.FirstOrDefault(a => a.ToString().StartsWith("[Route("));
             var routeAttributeValue = routeAttribute?.Attributes.FirstOrDefault()?.ArgumentList?.Arguments.FirstOrDefault()?.ToFullString()?.Replace("\"", "");
@@ -82,33 +79,41 @@ namespace LinkComposer.SourceGenerator
                     if (ap.Type is null)
                         return false;
 
-                    if (!_semanticModel.GetTypeInfo(ap.Type).Type.IsValueType 
-                        && _semanticModel.GetTypeInfo(ap.Type).Type.SpecialType != SpecialType.System_String
-                        && _semanticModel.GetTypeInfo(ap.Type).Type.ContainingNamespace.Name != "System")
-                    {
-                        if (ap.AttributeLists
-                            .Any(a => a.ToString().Contains("[FromQuery]") || a.ToFullString().Contains("[FromUri]")))
+                    var semanticType = _semanticModel.GetTypeInfo(ap.Type).Type;
+
+                    if (semanticType is INamedTypeSymbol namedType)
+                        if (namedType.TypeArguments.Length > 0
+                            && namedType.TypeArguments.FirstOrDefault().TypeKind == TypeKind.Enum)
+                            semanticType = namedType.TypeArguments.FirstOrDefault();
+
+                    if (semanticType.Kind == SymbolKind.ArrayType)
+                        semanticType = ((IArrayTypeSymbol)semanticType).ElementType;
+
+                    if (ap.AttributeLists
+                        .Any(a => a.ToString().Contains("[FromQuery]") || a.ToString().Contains("[FromUri]")))
+                    { 
+                        // if class already contains model with same nama, skip it
+                        if (Cls.Members.Where(m => m is ClassDeclarationSyntax).Any(c => ((ClassDeclarationSyntax)c).Identifier.Text == semanticType.Name))
+                            return true;
+
+                        // if class already contains model with same nama, skip it
+                        if (Cls.Members.Where(m => m is EnumDeclarationSyntax).Any(c => ((EnumDeclarationSyntax)c).Identifier.Text == semanticType.Name))
+                            return true;
+
+                        if (semanticType.TypeKind is TypeKind.Enum)
                         {
-                            var parameter = _semanticModel.GetDeclaredSymbol(ap);
-                            var properties = parameter.Type
-                                .GetMembers()
-                                .Where(a => a.Kind == SymbolKind.Property)
-                                .Select(a => (IPropertySymbol)a)
-                                .Select(p => SyntaxFactory.PropertyDeclaration(SyntaxFactory.ParseTypeName(p.Type.Name), p.Name)
-                                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                                    .AddAccessorListAccessors(
-                                        SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)),
-                                        SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration).WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken))
-                                    ));
+                            var enumDeclaration = Helpers.GetEnumFromTypeSymbol(semanticType);
 
-                            var pmMembers = SyntaxFactory.List<MemberDeclarationSyntax>()
-                                .AddRange(properties);
+                            Cls = Cls.AddMembers(enumDeclaration);
+                            return true;
+                        }
 
-                            var parameterModel = SyntaxFactory.ClassDeclaration(ap.Type.ToString())
-                                .WithMembers(pmMembers)
-                                .WithModifiers(SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword)));
-
-                            Cls = Cls.AddMembers(parameterModel);
+                        if (Helpers.IsTypeSymbolCustomClass(semanticType))
+                        {
+                            var res = Helpers.GetClassFromTypeSymbol(semanticType);
+                            Cls = Cls
+                                .AddMembers(res.cls)
+                                .AddMembers(res.additional.ToArray());
 
                             return true;
                         }
@@ -124,10 +129,30 @@ namespace LinkComposer.SourceGenerator
                     return SyntaxFactory.Parameter(SyntaxFactory.List<AttributeListSyntax>(), SyntaxFactory.TokenList(), ap.Type, ap.Identifier, ap.Default);
                 });
 
+            var sameActions = Cls.Members
+                .Where(m => m is MethodDeclarationSyntax && ((MethodDeclarationSyntax)m).Identifier.Text == actionName)
+                .Select(m => ((MethodDeclarationSyntax)m).ParameterList.Parameters.Select(p => p.Type.ToFullString()).ToArray())
+                .Count(parameters => HasSameParams(parameters, actionParameters.Select(p => p.Type.ToFullString()).ToArray()));
+
+            if (sameActions > 0)
+                actionName += sameActions + 1;
+
             var method = Helpers.CreateControllerLinkAction(newHtttpArributeList, actionName, actionParameters);
             Cls = Cls.AddMembers(method);
 
             base.VisitMethodDeclaration(node);
+        }
+
+        private static bool HasSameParams(string[] params1, string[] params2)
+        {
+            if (params1.Length != params2.Length)
+                return false;
+
+            for (int i = 0; i < params1.Length; i++)
+                if (params1[i] != params2[i])
+                    return false;
+
+            return true;
         }
     }
 }

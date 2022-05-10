@@ -13,7 +13,7 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
         {
             _linkComposer = linkComposer ?? throw new ArgumentNullException(nameof(linkComposer));
         }
-
+        
         [HttpGet("navigation", Name = nameof(Navigation))]
         public object Navigation(string test = "ahoj")
         {
@@ -25,11 +25,20 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
         }
 
         [HttpGet("get/{id}", Name = nameof(Get))]
-        public object Get(int id)
+        public object Get(int? id)
         {
             return new
             {
                 Get = _linkComposer.Link<HomePageControllerLink>(x => x.Get(id))
+            };
+        }
+
+        [HttpGet("getArray/{ids}", Name = nameof(GetArray))]
+        public object GetArray(string[] ids)
+        {
+            return new
+            {
+                Get = _linkComposer.Link<HomePageControllerLink>(x => x.GetArray(ids))
             };
         }
 
@@ -55,6 +64,43 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
             };
         }
 
+        [HttpGet("getModel2/{id}", Name = nameof(GetModel2))]
+        public object GetModel2(string id, [FromQuery] TestQueryModel testQueryModel)
+        {
+            return new
+            {
+                GetModel = _linkComposer.Link<HomePageControllerLink>(x => x.GetModel2(id, new HomePageControllerLink.TestQueryModel
+                {
+                    Limit = 10,
+                    Offset = 20
+                }))
+            };
+        }
+
+        [HttpGet("getModel3/{id}", Name = nameof(GetModel3))]
+        public object GetModel3(string id, [FromQuery] TestQueryModel[] testQueryModel)
+        {
+            return new
+            {
+                GetModel = _linkComposer.Link<HomePageControllerLink>(x => x.GetModel3(id, new[] {
+                    new HomePageControllerLink.TestQueryModel
+                    {
+                        Limit = 10,
+                        Offset = 20
+                    }
+                }))
+            };
+        }
+
+        [HttpGet("getModel4/{id}", Name = nameof(GetModel4))]
+        public object GetModel4(string id, [FromQuery] string[] names)
+        {
+            return new
+            {
+                GetModel = _linkComposer.Link<HomePageControllerLink>(x => x.GetModel4(id, names))
+            };
+        }
+
         [HttpPost("postBody", Name = nameof(PostBody))]
         public object PostBody(TestQueryModel testQueryModel)
         {
@@ -70,6 +116,42 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
             return new
             {
                 PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.PostPath(path))
+            };
+        }
+
+        [HttpPost("sameParams/{name}", Name = nameof(SameParams))]
+        public object SameParams(string name)
+        {
+            return new
+            {
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.SameParams(name))
+            };
+        }
+
+        [HttpPost("sameParams/{token}", Name = nameof(SameParams))]
+        public object SameParams(string token, [FromBody] TestQueryModel text)
+        {
+            return new
+            {
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.SameParams2(token))
+            };
+        }
+
+        [HttpPost("routeParams", Name = nameof(RouteParams))]
+        public object RouteParams(TestQueryModel model)
+        {
+            return new
+            {
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.RouteParams())
+            };
+        }
+
+        [HttpPost("Enums", Name = nameof(Enums))]
+        public object Enums([FromQuery] TestEnumQueryModel? model)
+        {
+            return new
+            {
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.Enums(HomePageControllerLink.TestEnumQueryModel.a))
             };
         }
     }
