@@ -14,6 +14,7 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
             _linkComposer = linkComposer ?? throw new ArgumentNullException(nameof(linkComposer));
         }
         
+        /*
         [HttpGet("navigation", Name = nameof(Navigation))]
         public object Navigation(string test = "ahoj")
         {
@@ -50,6 +51,7 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
                 GetByGUID = _linkComposer.Link<HomePageControllerLink>(x => x.GetByGUID(id))
             };
         }
+        */
 
         [HttpGet("getModel/{id}", Name = nameof(GetModel))]
         public object GetModel(string id, [FromQuery] TestQueryModel testQueryModel)
@@ -64,6 +66,7 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
             };
         }
 
+        /*
         [HttpGet("getModel2/{id}", Name = nameof(GetModel2))]
         public object GetModel2(string id, [FromQuery] TestQueryModel testQueryModel)
         {
@@ -106,7 +109,10 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.PostBody())
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.PostBody(new HomePageControllerLink.TestQueryModel
+                {
+
+                }))
             };
         }
 
@@ -142,7 +148,10 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.RouteParams())
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.RouteParams(new HomePageControllerLink.TestQueryModel
+                {
+
+                }))
             };
         }
 
@@ -154,5 +163,6 @@ namespace LinkComposer.AspNetCore.Sample.Controllers
                 PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.Enums(HomePageControllerLink.TestEnumQueryModel.a))
             };
         }
+        */
     }
 }

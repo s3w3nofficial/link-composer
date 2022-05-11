@@ -79,7 +79,14 @@ namespace LinkComposer.SourceGenerator
                     if (ap.Type is null)
                         return false;
 
+                    if (ap.AttributeLists
+                        .Any(a => a.ToString().Contains("[FromBody]") || a.ToString().Contains("[FromServices]")))
+                        return false;
+
                     var semanticType = _semanticModel.GetTypeInfo(ap.Type).Type;
+
+                    if (semanticType is null)
+                        return false;
 
                     if (semanticType is INamedTypeSymbol namedType)
                         if (namedType.TypeArguments.Length > 0
@@ -89,36 +96,61 @@ namespace LinkComposer.SourceGenerator
                     if (semanticType.Kind == SymbolKind.ArrayType)
                         semanticType = ((IArrayTypeSymbol)semanticType).ElementType;
 
-                    if (ap.AttributeLists
-                        .Any(a => a.ToString().Contains("[FromQuery]") || a.ToString().Contains("[FromUri]")))
-                    { 
-                        // if class already contains model with same nama, skip it
-                        if (Cls.Members.Where(m => m is ClassDeclarationSyntax).Any(c => ((ClassDeclarationSyntax)c).Identifier.Text == semanticType.Name))
-                            return true;
+                    // if class already contains model with same nama, skip it
+                    if (Cls.Members.Where(m => m is ClassDeclarationSyntax).Any(c => ((ClassDeclarationSyntax)c).Identifier.Text == semanticType.Name))
+                        return true;
 
-                        // if class already contains model with same nama, skip it
-                        if (Cls.Members.Where(m => m is EnumDeclarationSyntax).Any(c => ((EnumDeclarationSyntax)c).Identifier.Text == semanticType.Name))
-                            return true;
+                    // if class already contains model with same nama, skip it
+                    if (Cls.Members.Where(m => m is EnumDeclarationSyntax).Any(c => ((EnumDeclarationSyntax)c).Identifier.Text == semanticType.Name))
+                        return true;
 
-                        if (semanticType.TypeKind is TypeKind.Enum)
+                    if (Helpers.IsTypeSymbolCustomEnum(semanticType))
+                    {
+                        var enumDeclaration = Helpers.GetEnumFromTypeSymbol(semanticType);
+
+                        Cls = Cls.AddMembers(enumDeclaration);
+                        return true;
+                    }
+
+                    if (Helpers.IsTypeSymbolCustomClass(semanticType))
+                    {
+                        var members = new Dictionary<ITypeSymbol, MemberDeclarationSyntax>();
+                        var types = new Queue<ITypeSymbol>();
+                        types.Enqueue(semanticType);
+
+                        while (types.Count > 0)
                         {
-                            var enumDeclaration = Helpers.GetEnumFromTypeSymbol(semanticType);
+                            var current = types.Dequeue();
 
-                            Cls = Cls.AddMembers(enumDeclaration);
-                            return true;
+                            if (members.ContainsKey(current))
+                                continue;
+
+                            if (Cls.Members.Where(m => m is ClassDeclarationSyntax).Any(c => ((ClassDeclarationSyntax)c).Identifier.Text == current.Name))
+                                continue;
+
+                            if (Cls.Members.Where(m => m is EnumDeclarationSyntax).Any(c => ((EnumDeclarationSyntax)c).Identifier.Text == current.Name))
+                                continue;
+
+                            if (Helpers.IsTypeSymbolCustomEnum(current))
+                            {
+                                var e = Helpers.GetEnumFromTypeSymbol(current);
+                                members.Add(current, e);
+
+                                continue;
+                            }
+
+                            var res = Helpers.GetClassFromTypeSymbol(current);
+
+                            members.Add(current, res.cls);
+
+                            foreach (var addition in res.additional)
+                                if (!types.Any(a => a.Equals(addition)))
+                                    types.Enqueue(addition);
                         }
 
-                        if (Helpers.IsTypeSymbolCustomClass(semanticType))
-                        {
-                            var res = Helpers.GetClassFromTypeSymbol(semanticType);
-                            Cls = Cls
-                                .AddMembers(res.cls)
-                                .AddMembers(res.additional.ToArray());
+                        Cls = Cls.AddMembers(members.Values.ToArray());
 
-                            return true;
-                        }
-
-                        return false;
+                        return true;
                     }
 
                     return true;

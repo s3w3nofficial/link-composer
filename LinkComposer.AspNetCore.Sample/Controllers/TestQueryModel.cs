@@ -1,4 +1,6 @@
-﻿namespace LinkComposer.AspNetCore.Sample.Controllers
+﻿using System.Data;
+
+namespace LinkComposer.AspNetCore.Sample.Controllers
 {
     public class TestQueryModel
     {
@@ -7,6 +9,12 @@
 
         public IEnumerable<int> Tests { get; set; }
 
-        public SubTestQueryModel SubTest { get; set; }
+        public IEnumerable<SubTestQueryModel>? SubTests { get; set; }
+
+        public CancellationToken CancellationToken { get; set; }
+
+        public TestEnumQueryModel TestEnumQueryModel { get; set; }
+
+        public CommandType CommandType  { get; set; }
     }
 }
