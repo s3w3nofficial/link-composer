@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<OutputType>Library</OutputType>
+		<Title>Alza.LinkComposer.AspNetCore</Title>
+		<Authors>Tomas Pelak</Authors>
+		<Description>Alza.LinkComposer.AspNetCore</Description>
+		<PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
+		<IsPackable>true</IsPackable>
+		<PackageVersion>0.0.2</PackageVersion>
+		<PackageIcon>icon.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Alza.LinkComposer\Alza.LinkComposer.csproj" />
+	</ItemGroup>
+
+</Project>

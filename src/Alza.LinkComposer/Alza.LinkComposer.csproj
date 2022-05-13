@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<OutputType>Library</OutputType>
+		<Title>Alza.LinkComposer</Title>
+		<Authors>Tomas Pelak</Authors>
+		<Description>LinkComposer common models, tools and helpers</Description>
+		<PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
+		<IsPackable>true</IsPackable>
+		<PackageVersion>0.0.2</PackageVersion>
+		<PackageIcon>icon.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+</Project>
