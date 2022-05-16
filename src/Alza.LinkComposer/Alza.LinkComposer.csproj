@@ -9,7 +9,7 @@
 		<PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
 		<IsPackable>true</IsPackable>
-		<PackageVersion>0.0.2</PackageVersion>
+		<PackageVersion>0.0.2-alfa</PackageVersion>
 		<PackageIcon>icon.png</PackageIcon>
 	</PropertyGroup>
 
