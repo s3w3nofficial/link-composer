@@ -11,7 +11,7 @@ namespace Alza.LinkComposer.SourceGenerator
         public static ClassDeclarationSyntax CreateControllerLinkClass(string className, string assemblyName)
         {
             return SyntaxFactory.ClassDeclaration(className)
-                .WithModifiers(SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword)))
+                .WithModifiers(SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.SealedKeyword)))
                 .AddAttributeLists(SyntaxFactory.AttributeList(
                     SyntaxFactory.SingletonSeparatedList(
                         SyntaxFactory.Attribute(
@@ -138,7 +138,7 @@ namespace Alza.LinkComposer.SourceGenerator
         {
             return SyntaxFactory.MethodDeclaration(
                 SyntaxFactory.List(new[] { attributes }),
-                SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.InternalKeyword)),
+                SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword)),
                 SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
                 null,
                 SyntaxFactory.Identifier(actionName),
