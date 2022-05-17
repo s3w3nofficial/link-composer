@@ -36,6 +36,8 @@ namespace Alza.LinkComposer.SourceGenerator
             if (controllerRouteAttribute is null)
                 controllerRouteAttribute = node.AttributeLists.FirstOrDefault(a => a.ToString().StartsWith("[Route("));
 
+            ControllerRouteAttributeValue = controllerRouteAttribute?.Attributes.FirstOrDefault()?.ArgumentList?.Arguments.FirstOrDefault()?.ToFullString()?.Replace("\"", "");
+
             base.VisitClassDeclaration(node);
 
             var nsUsings = SyntaxFactory.List<UsingDirectiveSyntax>()
