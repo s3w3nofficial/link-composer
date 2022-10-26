@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Alza.LinkComposer.SourceGenerator
 {
-    public static class Helpers
+    public static class ComponentFactory
     {
         public static ClassDeclarationSyntax CreateControllerLinkClass(string className, string assemblyName)
         {
@@ -110,30 +110,6 @@ namespace Alza.LinkComposer.SourceGenerator
              );
         }
 
-        public static bool IsTypeSymbolCustomClass(ITypeSymbol typeSymbol)
-        {
-            return !typeSymbol.IsValueType
-                && typeSymbol.SpecialType != SpecialType.System_String
-                && !IsSystemNamespace(typeSymbol);
-        }
-
-        public static bool IsTypeSymbolCustomEnum(ITypeSymbol typeSymbol)
-        {
-            return typeSymbol.TypeKind is TypeKind.Enum
-                && !IsSystemNamespace(typeSymbol);
-        }
-
-        public static bool IsSystemNamespace(ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol.ContainingSymbol is null)
-                return false;
-
-            if (typeSymbol.ContainingSymbol.ToString().StartsWith("System"))
-                return true;
-
-            return false;
-        }
-
         public static MethodDeclarationSyntax CreateControllerLinkAction(AttributeListSyntax attributes, string actionName, IEnumerable<ParameterSyntax> parameters)
         {
             return SyntaxFactory.MethodDeclaration(
@@ -189,10 +165,80 @@ namespace Alza.LinkComposer.SourceGenerator
             return SyntaxFactory.ParseTypeName(name);
         }
 
+        public static ParameterSyntax CreateCleanParameter(ParameterSyntax p)
+        {
+            return SyntaxFactory.Parameter(SyntaxFactory.List<AttributeListSyntax>(), SyntaxFactory.TokenList(), p.Type, p.Identifier, p.Default);
+        }
+
+        public static SyntaxList<MemberDeclarationSyntax> CreateMembers(ClassDeclarationSyntax @class)
+        {
+            return SyntaxFactory.List<MemberDeclarationSyntax>()
+                .Add(@class);
+        }
+
+        public static SyntaxList<UsingDirectiveSyntax> CreateUsings()
+        {
+            return SyntaxFactory.List<UsingDirectiveSyntax>()
+                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("System.Collections.Generic")))
+                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("Alza.LinkComposer.Attributes")));
+        }
+
+        public static NamespaceDeclarationSyntax CreateNamespace(SyntaxList<UsingDirectiveSyntax> usings, SyntaxList<MemberDeclarationSyntax> members)
+        {
+            return SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName("Alza.LinkComposer.Links"),
+                SyntaxFactory.List<ExternAliasDirectiveSyntax>(),
+                usings, members).NormalizeWhitespace();
+        }
+
+        public static string GetNewClassName(string name)
+        {
+            return name.Replace("Controller", "ControllerLink");
+        }
+
+        public static bool IsTypeSymbolCustomClass(ITypeSymbol typeSymbol)
+        {
+            return !typeSymbol.IsValueType
+                && typeSymbol.SpecialType != SpecialType.System_String
+                && !IsSystemNamespace(typeSymbol);
+        }
+
+        public static bool IsTypeSymbolCustomEnum(ITypeSymbol typeSymbol)
+        {
+            return typeSymbol.TypeKind is TypeKind.Enum
+                && !IsSystemNamespace(typeSymbol);
+        }
+
+        public static bool IsSystemNamespace(ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol.ContainingSymbol is null)
+                return false;
+
+            if (typeSymbol.ContainingSymbol.ToString().StartsWith("System"))
+                return true;
+
+            if (typeSymbol.ContainingSymbol.ToString().StartsWith("Microsoft.AspNetCore.Http"))
+                return true;
+
+            return false;
+        }
+
         private static bool IsAutoProperty(IPropertySymbol propertySymbol)
         {
             var fields = propertySymbol.ContainingType.GetMembers().OfType<IFieldSymbol>();
             return fields.Any(field => SymbolEqualityComparer.Default.Equals(field.AssociatedSymbol, propertySymbol));
+        }
+
+        public static bool IsController(string name)
+        {
+            if (name.EndsWith("Controller"))
+                return true;
+
+            var split = name.Split(new string[] { "ControllerV" }, System.StringSplitOptions.None);
+
+            if (int.TryParse(split?.Last(), out int t))
+                return true;
+
+            return false;
         }
     }
 }

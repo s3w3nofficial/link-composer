@@ -7,17 +7,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alza.LinkComposer", "src\Al
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alza.LinkComposer.AspNetCore", "src\Alza.LinkComposer.AspNetCore\Alza.LinkComposer.AspNetCore.csproj", "{31C382D8-DDD3-4640-B875-ED582DF58A93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alza.LinkComposer.AspNetCore.Sample", "src\Alza.LinkComposer.AspNetCore.Sample\Alza.LinkComposer.AspNetCore.Sample.csproj", "{DED39CE6-DF31-4B94-A85C-7A5591F16698}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alza.LinkComposer.SourceGenerator", "src\Alza.LinkComposer.SourceGenerator\Alza.LinkComposer.SourceGenerator.csproj", "{A77FFDCF-238F-4C30-8764-AC685D71B83E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9ACC6038-6E6B-4927-9B96-1B1F057A1431}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alza.LinkComposer.AspNet.Sample", "src\Alza.LinkComposer.AspNet.Sample\Alza.LinkComposer.AspNet.Sample.csproj", "{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{31B15C66-6E23-4C32-ACBF-744B9A8FC45F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alza.LinkComposer.AspNetCore.Tests", "tests\Alza.LinkComposer.AspNetCore.Tests\Alza.LinkComposer.AspNetCore.Tests.csproj", "{39E3D65C-AB1C-4DCC-8766-D6A49EEB7619}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alza.LinkComposer.AspNetCore.Tests", "tests\Alza.LinkComposer.AspNetCore.Tests\Alza.LinkComposer.AspNetCore.Tests.csproj", "{39E3D65C-AB1C-4DCC-8766-D6A49EEB7619}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alza.LinkComposer.AspNet", "src\Alza.LinkComposer.AspNet\Alza.LinkComposer.AspNet.csproj", "{E4E5DA5C-3196-4003-91F5-F71756262E42}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{F9F923E9-0360-46CB-9DC8-A967B6453814}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alza.LinkComposer.AspNet.Sample", "samples\Alza.LinkComposer.AspNet.Sample\Alza.LinkComposer.AspNet.Sample.csproj", "{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alza.LinkComposer.AspNetCore.Sample", "samples\Alza.LinkComposer.AspNetCore.Sample\Alza.LinkComposer.AspNetCore.Sample.csproj", "{94072052-AAC7-4F0E-BDB5-E31116ECA41E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,22 +37,26 @@ Global
 		{31C382D8-DDD3-4640-B875-ED582DF58A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31C382D8-DDD3-4640-B875-ED582DF58A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31C382D8-DDD3-4640-B875-ED582DF58A93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DED39CE6-DF31-4B94-A85C-7A5591F16698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DED39CE6-DF31-4B94-A85C-7A5591F16698}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DED39CE6-DF31-4B94-A85C-7A5591F16698}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DED39CE6-DF31-4B94-A85C-7A5591F16698}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A77FFDCF-238F-4C30-8764-AC685D71B83E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A77FFDCF-238F-4C30-8764-AC685D71B83E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A77FFDCF-238F-4C30-8764-AC685D71B83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A77FFDCF-238F-4C30-8764-AC685D71B83E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39E3D65C-AB1C-4DCC-8766-D6A49EEB7619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39E3D65C-AB1C-4DCC-8766-D6A49EEB7619}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39E3D65C-AB1C-4DCC-8766-D6A49EEB7619}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39E3D65C-AB1C-4DCC-8766-D6A49EEB7619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4E5DA5C-3196-4003-91F5-F71756262E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E5DA5C-3196-4003-91F5-F71756262E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E5DA5C-3196-4003-91F5-F71756262E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E5DA5C-3196-4003-91F5-F71756262E42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94072052-AAC7-4F0E-BDB5-E31116ECA41E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94072052-AAC7-4F0E-BDB5-E31116ECA41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94072052-AAC7-4F0E-BDB5-E31116ECA41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94072052-AAC7-4F0E-BDB5-E31116ECA41E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,10 +64,11 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D705BD24-9B9F-4361-92D7-A12C7148EE5E} = {9ACC6038-6E6B-4927-9B96-1B1F057A1431}
 		{31C382D8-DDD3-4640-B875-ED582DF58A93} = {9ACC6038-6E6B-4927-9B96-1B1F057A1431}
-		{DED39CE6-DF31-4B94-A85C-7A5591F16698} = {9ACC6038-6E6B-4927-9B96-1B1F057A1431}
 		{A77FFDCF-238F-4C30-8764-AC685D71B83E} = {9ACC6038-6E6B-4927-9B96-1B1F057A1431}
-		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40} = {9ACC6038-6E6B-4927-9B96-1B1F057A1431}
 		{39E3D65C-AB1C-4DCC-8766-D6A49EEB7619} = {31B15C66-6E23-4C32-ACBF-744B9A8FC45F}
+		{E4E5DA5C-3196-4003-91F5-F71756262E42} = {9ACC6038-6E6B-4927-9B96-1B1F057A1431}
+		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40} = {F9F923E9-0360-46CB-9DC8-A967B6453814}
+		{94072052-AAC7-4F0E-BDB5-E31116ECA41E} = {F9F923E9-0360-46CB-9DC8-A967B6453814}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95177E0F-4C88-4657-9B9E-0BE575A374EF}
