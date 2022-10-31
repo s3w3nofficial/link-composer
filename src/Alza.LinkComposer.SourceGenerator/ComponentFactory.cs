@@ -15,17 +15,17 @@ namespace Alza.LinkComposer.SourceGenerator
                 .AddAttributeLists(SyntaxFactory.AttributeList(
                     SyntaxFactory.SingletonSeparatedList(
                         SyntaxFactory.Attribute(
-                            SyntaxFactory.IdentifierName("LinkComposerProjectInfo"))
+                            SyntaxFactory.IdentifierName(Constants.LinkComposerProjectInfo))
                                 .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
                                     SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(assemblyName)))))))
                 .AddBaseListTypes(SyntaxFactory.SimpleBaseType(
-                    SyntaxFactory.ParseTypeName("LinkComposerController")));
+                    SyntaxFactory.ParseTypeName(Constants.LinkComposerController)));
         }
 
         public static AttributeListSyntax CreateLinkComposerRouteAttribute(string route, string controllerRoute)
         {
             return SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(
-                SyntaxFactory.Attribute(SyntaxFactory.IdentifierName("LinkComposerRoute"))
+                SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(Constants.LinkComposerRoute))
                 .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
                     SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(route ?? ""))),
                     SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(controllerRoute ?? ""))))));
@@ -179,6 +179,7 @@ namespace Alza.LinkComposer.SourceGenerator
         public static SyntaxList<UsingDirectiveSyntax> CreateUsings()
         {
             return SyntaxFactory.List<UsingDirectiveSyntax>()
+                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("System")))
                 .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("System.Collections.Generic")))
                 .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("Alza.LinkComposer.Attributes")));
         }

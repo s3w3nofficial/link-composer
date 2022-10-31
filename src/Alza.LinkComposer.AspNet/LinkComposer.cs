@@ -57,7 +57,9 @@ namespace Alza.LinkComposer.AspNet
 
             var config = this._options.Value.Routes[invocatitonInfo.ProjectName];
 
-            invocatitonInfo.MethodTemplate ??= "";
+            if (invocatitonInfo.MethodTemplate is null)
+                invocatitonInfo.MethodTemplate = "";
+
             var routeTemplate = TemplateParser.Parse(invocatitonInfo.MethodTemplate);
             var pool = new DefaultObjectPoolProvider().Create(new UriBuilderContextPooledObjectPolicy());
             var binder = new TemplateBinder(UrlEncoder.Default, pool, routeTemplate, null);

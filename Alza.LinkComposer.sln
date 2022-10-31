@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alza.LinkComposer.AspNet.Sa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alza.LinkComposer.AspNetCore.Sample", "samples\Alza.LinkComposer.AspNetCore.Sample\Alza.LinkComposer.AspNetCore.Sample.csproj", "{94072052-AAC7-4F0E-BDB5-E31116ECA41E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alza.LinkComposer.AspNet.Tests", "tests\Alza.LinkComposer.AspNet.Tests\Alza.LinkComposer.AspNet.Tests.csproj", "{C23F96F3-47F3-4ED4-8948-E047711A3BB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{94072052-AAC7-4F0E-BDB5-E31116ECA41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94072052-AAC7-4F0E-BDB5-E31116ECA41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94072052-AAC7-4F0E-BDB5-E31116ECA41E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C23F96F3-47F3-4ED4-8948-E047711A3BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23F96F3-47F3-4ED4-8948-E047711A3BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23F96F3-47F3-4ED4-8948-E047711A3BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23F96F3-47F3-4ED4-8948-E047711A3BB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{E4E5DA5C-3196-4003-91F5-F71756262E42} = {9ACC6038-6E6B-4927-9B96-1B1F057A1431}
 		{0C0417BE-A3AF-485E-88BA-DBB5BA9CAD40} = {F9F923E9-0360-46CB-9DC8-A967B6453814}
 		{94072052-AAC7-4F0E-BDB5-E31116ECA41E} = {F9F923E9-0360-46CB-9DC8-A967B6453814}
+		{C23F96F3-47F3-4ED4-8948-E047711A3BB8} = {31B15C66-6E23-4C32-ACBF-744B9A8FC45F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95177E0F-4C88-4657-9B9E-0BE575A374EF}

@@ -150,6 +150,7 @@ namespace Alza.LinkComposer.SourceGenerator
 
             return true;
         }
+
         #endregion
     }
 }

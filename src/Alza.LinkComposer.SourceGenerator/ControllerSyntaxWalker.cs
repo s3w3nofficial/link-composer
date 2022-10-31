@@ -83,8 +83,12 @@ namespace Alza.LinkComposer.SourceGenerator
                 return false;
 
             if (ap.AttributeLists
-                .Any(a => a.ToString().Contains(Constants.FromBodyAttribute) || a.ToString().Contains(Constants.FromServicesAttribute)))
+                .Any(a => a.ToString().Contains(Constants.FromBodyAttribute) 
+                    || a.ToString().Contains(Constants.FromServicesAttribute) 
+                    || a.ToString().Contains(Constants.FromFormAttribute)))
+            {
                 return false;
+            }
 
             return true;
         }
