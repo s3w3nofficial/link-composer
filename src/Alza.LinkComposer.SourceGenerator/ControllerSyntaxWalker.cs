@@ -12,11 +12,13 @@ namespace Alza.LinkComposer.SourceGenerator
 
         private readonly GeneratorExecutionContext _context;
         private readonly SemanticModel _semanticModel;
+        private readonly string _projectName;
 
-        public ControllerSyntaxWalker(GeneratorExecutionContext context, SemanticModel semanticModel)
+        public ControllerSyntaxWalker(GeneratorExecutionContext context, SemanticModel semanticModel, string projectName)
         {
             _context = context;
             _semanticModel = semanticModel;
+            _projectName = projectName;
         }
 
         public override void VisitClassDeclaration(ClassDeclarationSyntax node)
@@ -41,7 +43,7 @@ namespace Alza.LinkComposer.SourceGenerator
 
             var usings = ComponentFactory.CreateUsings();
             var members = ComponentFactory.CreateMembers(controllerLink);
-            var ns = ComponentFactory.CreateNamespace(usings, members);
+            var ns = ComponentFactory.CreateNamespace(_projectName, usings, members);
 
             _context.AddSource($"{className}.g.cs", ns.ToFullString());
         }

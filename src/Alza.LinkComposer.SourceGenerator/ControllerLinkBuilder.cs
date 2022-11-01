@@ -63,7 +63,17 @@ namespace Alza.LinkComposer.SourceGenerator
         {
             foreach (var parameter in parameters)
             {
-                var semanticType = _semanticModel.GetTypeInfo(parameter.Type).Type;
+                var type = ComponentFactory.ExtractIfNullable(parameter.Type);
+
+                var typeInfo = _semanticModel.GetTypeInfo(type);
+                var semanticType = typeInfo.Type;
+
+                // Work Around
+                if (semanticType is null)
+                    continue;
+
+                if (ComponentFactory.IsTypeArray(semanticType))
+                    semanticType = ((IArrayTypeSymbol)semanticType).ElementType;
 
                 if (ComponentFactory.IsTypeSymbolCustomEnum(semanticType))
                 {
@@ -127,11 +137,9 @@ namespace Alza.LinkComposer.SourceGenerator
 
                 var existingMethodParameters = existingMethod.ParameterList.Parameters.Select(p => p.Type.ToFullString()).ToArray();
                 if (!HasSameParams(methodParameterNames, existingMethodParameters))
-                {
-                    newName = $"{name}{methodNumber}";
                     break;
-                }
 
+                newName = $"{name}{methodNumber}";
                 methodNumber += 1;
             }
             while (true);

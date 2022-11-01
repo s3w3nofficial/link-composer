@@ -62,6 +62,28 @@ namespace Alza.LinkComposer.SourceGenerator
                 .GetMembers()
                 .Where(a => a.Kind == SymbolKind.Property)
                 .Select(a => (IPropertySymbol)a)
+                .Where(p =>
+                {
+                    var attributes = p.GetAttributes();
+                    if (attributes.Any(a =>
+                    {
+                        var name = a.AttributeClass.ToString();
+
+                        if (name.EndsWith("FromBodyAttribute"))
+                            return true;
+
+                        if (name.EndsWith("FromServicesAttribute"))
+                            return true;
+
+                        if (name.EndsWith("FromFormAttribute"))
+                            return true;
+
+                        return false;
+                    }))
+                        return false;
+
+                    return true;
+                })
                 .Where(p => IsAutoProperty(p));
 
             foreach (var property in properties)
@@ -184,9 +206,11 @@ namespace Alza.LinkComposer.SourceGenerator
                 .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("Alza.LinkComposer.Attributes")));
         }
 
-        public static NamespaceDeclarationSyntax CreateNamespace(SyntaxList<UsingDirectiveSyntax> usings, SyntaxList<MemberDeclarationSyntax> members)
+        public static NamespaceDeclarationSyntax CreateNamespace(string projectName, SyntaxList<UsingDirectiveSyntax> usings, SyntaxList<MemberDeclarationSyntax> members)
         {
-            return SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName("Alza.LinkComposer.Links"),
+            var identifier = projectName is null ? "Alza.LinkComposer.Links" : $"Alza.LinkComposer.Links.{projectName}";
+
+            return SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName(identifier),
                 SyntaxFactory.List<ExternAliasDirectiveSyntax>(),
                 usings, members).NormalizeWhitespace();
         }
@@ -194,6 +218,19 @@ namespace Alza.LinkComposer.SourceGenerator
         public static string GetNewClassName(string name)
         {
             return name.Replace("Controller", "ControllerLink");
+        }
+
+        public static TypeSyntax ExtractIfNullable(TypeSyntax type)
+        {
+            if (type is NullableTypeSyntax nullableType)
+                return nullableType.ElementType;
+
+            return type;
+        }
+
+        public static bool IsTypeArray(ITypeSymbol typeSymbol)
+        {
+            return typeSymbol.Kind == SymbolKind.ArrayType;
         }
 
         public static bool IsTypeSymbolCustomClass(ITypeSymbol typeSymbol)
