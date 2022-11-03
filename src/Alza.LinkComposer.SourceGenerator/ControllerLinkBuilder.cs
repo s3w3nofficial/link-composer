@@ -16,16 +16,16 @@ namespace Alza.LinkComposer.SourceGenerator
         private List<EnumDeclarationSyntax> _enums = new();
         private List<ClassDeclarationSyntax> _classes = new();
 
-        public ControllerLinkBuilder(string name, string assemblyName, string routeAttributeValue, SemanticModel semanticModel)
+        public ControllerLinkBuilder(string name, string assemblyName, string routeAttributeValue, SemanticModel semanticModel, int? apiVersion = null)
         {
-            _classDeclarationSyntax = ComponentFactory.CreateControllerLinkClass(name, assemblyName);
+            _classDeclarationSyntax = ComponentFactory.CreateControllerLinkClass(name, assemblyName, apiVersion);
             _routeAttributeValue = routeAttributeValue;
             _semanticModel = semanticModel;
         }
 
-        public void AddMethod(string route, string name, IEnumerable<ParameterSyntax> parameters)
+        public void AddMethod(string route, string name, IEnumerable<ParameterSyntax> parameters, int? apiVersion = null)
         {
-            var routeAttribute = ComponentFactory.CreateLinkComposerRouteAttribute(route, _routeAttributeValue);
+            var routeAttribute = ComponentFactory.CreateLinkComposerRouteAttribute(route, _routeAttributeValue, apiVersion);
 
             // if parameter is a custom type recreate it
             AddCustomTypes(parameters);
@@ -41,11 +41,6 @@ namespace Alza.LinkComposer.SourceGenerator
             var method = ComponentFactory.CreateControllerLinkAction(routeAttribute, newName, cleanParameters);
 
             _methods.Add(method);
-        }
-
-        public void AddEnum(EnumDeclarationSyntax enumDeclarationSyntax)
-        {
-            _enums.Add(enumDeclarationSyntax);
         }
 
         public ClassDeclarationSyntax Build()
@@ -77,8 +72,11 @@ namespace Alza.LinkComposer.SourceGenerator
 
                 if (ComponentFactory.IsTypeSymbolCustomEnum(semanticType))
                 {
-                    var enumDeclaration = ComponentFactory.GetEnumFromTypeSymbol(semanticType);
-                    AddEnum(enumDeclaration);
+                    if (_enums.Any(e => e.Identifier.Text == semanticType.Name))
+                        continue;
+
+                    var e = ComponentFactory.GetEnumFromTypeSymbol(semanticType);
+                    _enums.Add(e);
                 }
 
                 if (ComponentFactory.IsTypeSymbolCustomClass(semanticType))

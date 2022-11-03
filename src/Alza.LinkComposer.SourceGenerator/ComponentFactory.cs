@@ -8,27 +8,39 @@ namespace Alza.LinkComposer.SourceGenerator
 {
     public static class ComponentFactory
     {
-        public static ClassDeclarationSyntax CreateControllerLinkClass(string className, string assemblyName)
+        public static ClassDeclarationSyntax CreateControllerLinkClass(string className, string assemblyName, int? apiVersion = null)
         {
+            var attribute = SyntaxFactory.Attribute(
+                SyntaxFactory.IdentifierName(Constants.LinkComposerProjectInfo))
+                    .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
+                        SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(assemblyName))));
+
+            if (apiVersion != null)
+                attribute = attribute
+                    .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
+                        SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(apiVersion.Value))));
+            
             return SyntaxFactory.ClassDeclaration(className)
                 .WithModifiers(SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.SealedKeyword)))
                 .AddAttributeLists(SyntaxFactory.AttributeList(
-                    SyntaxFactory.SingletonSeparatedList(
-                        SyntaxFactory.Attribute(
-                            SyntaxFactory.IdentifierName(Constants.LinkComposerProjectInfo))
-                                .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
-                                    SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(assemblyName)))))))
+                    SyntaxFactory.SingletonSeparatedList(attribute)))
                 .AddBaseListTypes(SyntaxFactory.SimpleBaseType(
                     SyntaxFactory.ParseTypeName(Constants.LinkComposerController)));
         }
 
-        public static AttributeListSyntax CreateLinkComposerRouteAttribute(string route, string controllerRoute)
+        public static AttributeListSyntax CreateLinkComposerRouteAttribute(string route, string controllerRoute, int? apiVersion = null)
         {
-            return SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(
-                SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(Constants.LinkComposerRoute))
+            var attribute = SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(Constants.LinkComposerRoute))
                 .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
                     SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(route ?? ""))),
-                    SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(controllerRoute ?? ""))))));
+                    SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(controllerRoute ?? ""))));
+
+            if (apiVersion != null)
+                attribute = attribute
+                    .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
+                        SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(apiVersion.Value))));
+
+            return SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(attribute));
         }
 
         public static EnumDeclarationSyntax GetEnumFromTypeSymbol(ITypeSymbol typeSymbol)
@@ -95,7 +107,7 @@ namespace Alza.LinkComposer.SourceGenerator
                 if (property.Type?.Name == "CancellationToken")
                     continue;
 
-                if (property.Type is INamedTypeSymbol namedType 
+                if (property.Type is INamedTypeSymbol namedType
                     && namedType.IsGenericType)
                 {
                     var firstTypeArg = namedType.TypeArguments.FirstOrDefault();
@@ -104,7 +116,7 @@ namespace Alza.LinkComposer.SourceGenerator
                 }
 
                 if (IsTypeSymbolCustomClass(property.Type) || IsTypeSymbolCustomEnum(property.Type))
-                    additionalClasses.Add(property.Type); 
+                    additionalClasses.Add(property.Type);
 
                 members.Add(GetPropertyFromPropertySymbol(property));
             }

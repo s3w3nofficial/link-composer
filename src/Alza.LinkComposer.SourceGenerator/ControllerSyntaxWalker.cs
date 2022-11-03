@@ -35,7 +35,17 @@ namespace Alza.LinkComposer.SourceGenerator
 
             var controllerRouteAttributeValue = controllerRouteAttribute?.Attributes.FirstOrDefault()?.ArgumentList?.Arguments.FirstOrDefault()?.ToFullString()?.Replace("\"", "");
 
-            _controllerLinkBuilder = new ControllerLinkBuilder(className, _context.Compilation.AssemblyName, controllerRouteAttributeValue, _semanticModel);
+            // Get ApiVersion attribute value
+            int? apiVersion = null;
+            var apiVersionAttribute = node.AttributeLists.FirstOrDefault(a => a.ToString().StartsWith("[ApiVersion("));
+            if (apiVersionAttribute != null)
+            {
+                var tmp = apiVersionAttribute?.Attributes.FirstOrDefault().ArgumentList?.Arguments.FirstOrDefault().ToFullString()?.Replace("\"", "");
+                if (int.TryParse(tmp, out int version))
+                    apiVersion = version;
+            }
+
+            _controllerLinkBuilder = new ControllerLinkBuilder(className, _context.Compilation.AssemblyName, controllerRouteAttributeValue, _semanticModel, apiVersion);
 
             base.VisitClassDeclaration(node);
 
@@ -67,6 +77,16 @@ namespace Alza.LinkComposer.SourceGenerator
 
             var route = httpAttributeValue ?? routeAttributeValue;
 
+            // Get ApiVersion attribute value
+            int? apiVersion = null;
+            var apiVersionAttribute = attributes.FirstOrDefault(a => a.ToString().StartsWith("[ApiVersion("));
+            if (apiVersionAttribute != null)
+            {
+                var tmp = apiVersionAttribute?.Attributes.FirstOrDefault().ArgumentList?.Arguments.FirstOrDefault().ToFullString()?.Replace("\"", "");
+                if (int.TryParse(tmp, out int version))
+                    apiVersion = version;
+            }
+
             var actionName = node.Identifier.ToString();
 
             // exclude parameters
@@ -74,7 +94,7 @@ namespace Alza.LinkComposer.SourceGenerator
                 .Where(ap => IsValidParameter(ap))
                 .Where(ap => ap.Type?.ToString() != nameof(CancellationToken));
 
-            _controllerLinkBuilder.AddMethod(route, actionName, actionParameters);
+            _controllerLinkBuilder.AddMethod(route, actionName, actionParameters, apiVersion);
 
             base.VisitMethodDeclaration(node);
         }

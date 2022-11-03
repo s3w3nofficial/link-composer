@@ -8,6 +8,8 @@ namespace Alza.LinkComposer.Attributes
 
         public string ControllerTemplate { get; set; } = null;
 
+        public int? Version { get; set; } = null;
+
         public LinkComposerRouteAttribute()
         {
 
@@ -22,6 +24,13 @@ namespace Alza.LinkComposer.Attributes
         {
             this.Template = template;
             this.ControllerTemplate = controllerTenplate;
+        }
+
+        public LinkComposerRouteAttribute(string template, string controllerTemplate, int version)
+        {
+            this.Template = template;
+            this.ControllerTemplate = controllerTemplate;
+            this.Version = version;
         }
     }
 }

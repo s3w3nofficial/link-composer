@@ -6,7 +6,8 @@ using static Alza.LinkComposer.AspNetCore.Sample.Controllers.Wrapper;
 namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [ApiVersion("1")]
+    [Route("api/homepage/v{version:apiVersion}")]
     public class HomePageController : ControllerBase
     {
         private readonly ILinkComposer _linkComposer;

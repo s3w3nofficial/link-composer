@@ -86,13 +86,17 @@ namespace Alza.LinkComposer
                 }
             }
 
-            var projectName = typeof(T).CustomAttributes
-                .FirstOrDefault(ca => ca.AttributeType == typeof(LinkComposerProjectInfoAttribute))
-                ?.ConstructorArguments.FirstOrDefault().Value as string;
+            var projectAttribute = typeof(T).GetCustomAttribute<LinkComposerProjectInfoAttribute>();
+
+            if (httpMethodAttribute.Version is null && projectAttribute.Version != null)
+                controllerRouteParameters.Add("version", projectAttribute.Version.ToString());
+
+            if (httpMethodAttribute.Version != null)
+                controllerRouteParameters.Add("version", httpMethodAttribute.Version.ToString());
 
             return new Invocation
             {
-                ProjectName = projectName,
+                ProjectName = projectAttribute.Name,
                 ParameterValues = queryParameters,
                 RouteParameterValues = routeParameters,
                 ControllerName = typeof(T).Name.Replace("ControllerLink", ""),
