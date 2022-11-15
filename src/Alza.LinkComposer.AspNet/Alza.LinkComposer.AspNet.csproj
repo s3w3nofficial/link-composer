@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
-		<Title>Alza.LinkComposer</Title>
+		<Title>Alza.LinkComposer.AspNet</Title>
 		<Authors>Tomas Pelak</Authors>
-		<Description>LinkComposer common models, tools and helpers</Description>
+		<Description>Alza.LinkComposer.AspNet</Description>
 		<PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
 		<IsPackable>true</IsPackable>
@@ -14,11 +14,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="icon.png" Pack="true" PackagePath="\" />
+		<None Include="icon.png" Pack="true" PackagePath="\">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Alza.LinkComposer\Alza.LinkComposer.csproj" />
 	</ItemGroup>
 
 </Project>

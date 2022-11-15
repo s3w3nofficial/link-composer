@@ -3,13 +3,13 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
-        <Title>LinkComposer.SourceGenerator</Title>
+        <Title>Alza.LinkComposer.SourceGenerator</Title>
         <Authors>Tomas Pelak</Authors>
         <Description>SourceGenerator for generating controllers that can be then found and translate to url</Description>
         <PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
         <RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.0.8-alfa</PackageVersion>
+        <PackageVersion>0.1.8-alfa</PackageVersion>
         <IncludeBuildOutput>false</IncludeBuildOutput>
 		<PackageIcon>icon.png</PackageIcon>
 	</PropertyGroup>

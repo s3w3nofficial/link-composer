@@ -1,11 +1,13 @@
 ﻿using Alza.LinkComposer.Interfaces;
-using Alza.LinkComposer.Links;
+using Alza.LinkComposer.Links.Monolith;
 using Microsoft.AspNetCore.Mvc;
+using static Alza.LinkComposer.AspNetCore.Sample.Controllers.Wrapper;
 
 namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [ApiVersion("1")]
+    [Route("api/homepage/v{version:apiVersion}")]
     public class HomePageController : ControllerBase
     {
         private readonly ILinkComposer _linkComposer;
@@ -136,7 +138,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.SameParams2(token))
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.SameParams1(token))
             };
         }
 
@@ -158,6 +160,15 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
             return new
             {
                 PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.Enums(HomePageControllerLink.TestEnumQueryModel.a))
+            };
+        }
+
+        [HttpPost("Enums", Name = nameof(Enums2))]
+        public object Enums2([FromQuery] TestEnum? model)
+        {
+            return new
+            {
+                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.Enums2(HomePageControllerLink.TestEnum.A))
             };
         }
     }

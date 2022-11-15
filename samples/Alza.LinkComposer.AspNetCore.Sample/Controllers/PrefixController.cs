@@ -1,5 +1,6 @@
 ﻿using Alza.LinkComposer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Alza.LinkComposer.Links.Monolith;
 
 namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
 {
@@ -19,7 +20,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                Navigation = _linkComposer.Link<Links.PrefixControllerLink>(x => x.PrefixNavigation())
+                Navigation = _linkComposer.Link<PrefixControllerLink>(x => x.PrefixNavigation())
             };
         }
     }

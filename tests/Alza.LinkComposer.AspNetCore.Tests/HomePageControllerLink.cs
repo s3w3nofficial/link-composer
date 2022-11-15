@@ -4,27 +4,94 @@ using System.Collections.Generic;
 
 namespace Alza.LinkComposer.AspNetCore.Tests;
 
-[LinkComposerProjectInfo("Alza.LinkComposer.AspNetCore.Sample")]
-public class HomePageControllerLink : LinkComposerController
+[LinkComposerProjectInfo("Alza.LinkComposer.AspNetCore.Sample", 1)]
+public sealed class HomePageControllerLink : LinkComposerController
 {
-    [LinkComposerRoute("navigation", "")]
-    internal void Navigation(string test = "ahoj")
+    [LinkComposerRoute("navigation", "api/homepage/v{version:apiVersion}")]
+    public void Navigation(string test = "ahoj")
     {
     }
 
-    [LinkComposerRoute("get/{id}", "")]
-    internal void Get(int? id)
+    [LinkComposerRoute("get/{id}", "api/homepage/v{version:apiVersion}")]
+    public void Get(int? id)
     {
     }
 
-    [LinkComposerRoute("getArray/{ids}", "")]
-    internal void GetArray(string[] ids)
+    [LinkComposerRoute("getArray/{ids}", "api/homepage/v{version:apiVersion}")]
+    public void GetArray(string[] ids)
     {
     }
 
-    [LinkComposerRoute("getByGuid/{id}", "")]
-    internal void GetByGUID(Guid id)
+    [LinkComposerRoute("getByGuid/{id}", "api/homepage/v{version:apiVersion}")]
+    public void GetByGUID(Guid id)
     {
+    }
+
+    [LinkComposerRoute("getModel/{id}", "api/homepage/v{version:apiVersion}")]
+    public void GetModel(string id, TestQueryModel testQueryModel)
+    {
+    }
+
+    [LinkComposerRoute("getModel2/{id}", "api/homepage/v{version:apiVersion}")]
+    public void GetModel2(string id, TestQueryModel testQueryModel)
+    {
+    }
+
+    [LinkComposerRoute("getModel3/{id}", "api/homepage/v{version:apiVersion}")]
+    public void GetModel3(string id, TestQueryModel[] testQueryModel)
+    {
+    }
+
+    [LinkComposerRoute("getModel4/{id}", "api/homepage/v{version:apiVersion}")]
+    public void GetModel4(string id, string[] names)
+    {
+    }
+
+    [LinkComposerRoute("postBody", "api/homepage/v{version:apiVersion}")]
+    public void PostBody(TestQueryModel testQueryModel)
+    {
+    }
+
+    [LinkComposerRoute("postPath/{path}", "api/homepage/v{version:apiVersion}")]
+    public void PostPath(Uri path)
+    {
+    }
+
+    [LinkComposerRoute("sameParams/{name}", "api/homepage/v{version:apiVersion}")]
+    public void SameParams(string name)
+    {
+    }
+
+    [LinkComposerRoute("sameParams/{token}", "api/homepage/v{version:apiVersion}")]
+    public void SameParams1(string token)
+    {
+    }
+
+    [LinkComposerRoute("routeParams", "api/homepage/v{version:apiVersion}")]
+    public void RouteParams(TestQueryModel model)
+    {
+    }
+
+    [LinkComposerRoute("Enums", "api/homepage/v{version:apiVersion}")]
+    public void Enums(TestEnumQueryModel? model)
+    {
+    }
+
+    [LinkComposerRoute("Enums", "api/homepage/v{version:apiVersion}")]
+    public void Enums2(TestEnum? model)
+    {
+    }
+
+    public enum TestEnumQueryModel
+    {
+        a,
+        b
+    }
+
+    public enum TestEnum
+    {
+        A,
+        B
     }
 
     public class TestQueryModel
@@ -45,61 +112,5 @@ public class HomePageControllerLink : LinkComposerController
     public class SubTestQueryModel
     {
         public IEnumerable<System.Int32>? TestsNullable { get; set; }
-    }
-
-    public enum TestEnumQueryModel
-    {
-        a,
-        b
-    }
-
-    [LinkComposerRoute("getModel/{id}", "")]
-    internal void GetModel(string id, TestQueryModel testQueryModel)
-    {
-    }
-
-    [LinkComposerRoute("getModel2/{id}", "")]
-    internal void GetModel2(string id, TestQueryModel testQueryModel)
-    {
-    }
-
-    [LinkComposerRoute("getModel3/{id}", "")]
-    internal void GetModel3(string id, TestQueryModel[] testQueryModel)
-    {
-    }
-
-    [LinkComposerRoute("getModel4/{id}", "")]
-    internal void GetModel4(string id, string[] names)
-    {
-    }
-
-    [LinkComposerRoute("postBody", "")]
-    internal void PostBody(TestQueryModel testQueryModel)
-    {
-    }
-
-    [LinkComposerRoute("postPath/{path}", "")]
-    internal void PostPath(Uri path)
-    {
-    }
-
-    [LinkComposerRoute("sameParams/{name}", "")]
-    internal void SameParams(string name)
-    {
-    }
-
-    [LinkComposerRoute("sameParams/{token}", "")]
-    internal void SameParams2(string token)
-    {
-    }
-
-    [LinkComposerRoute("routeParams", "")]
-    internal void RouteParams(TestQueryModel model)
-    {
-    }
-
-    [LinkComposerRoute("Enums", "")]
-    internal void Enums(TestEnumQueryModel? model)
-    {
     }
 }

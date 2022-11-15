@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Alza.LinkComposer.Links;
+using Alza.LinkComposer.Links.Monolith;
 using Alza.LinkComposer.Interfaces;
 
 namespace Alza.LinkComposer.AspNetCore.Sample.Controllers

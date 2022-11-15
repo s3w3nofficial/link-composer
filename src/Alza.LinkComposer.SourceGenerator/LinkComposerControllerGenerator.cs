@@ -25,6 +25,11 @@ namespace Alza.LinkComposer.SourceGenerator
 
             Debug.WriteLine("Execute code generator");
 
+            string projectName = null;
+
+            if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.ProjectName", out var projectNameValue))
+                projectName = projectNameValue;
+
             var syntaxTrees = context.Compilation.SyntaxTrees;
 
             foreach (var syntaxTree in syntaxTrees)
@@ -33,7 +38,7 @@ namespace Alza.LinkComposer.SourceGenerator
 
                 var root = syntaxTree.GetRoot();
 
-                new ControllerSyntaxWalker(context, model).Visit(root);
+                new ControllerSyntaxWalker(context, model, projectName).Visit(root);
             }
         }
     }
