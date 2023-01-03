@@ -1,0 +1,53 @@
+pool:
+  name: AlzaMasterQueue
+
+trigger:
+- master 
+
+steps:
+
+- task: UseDotNet@2
+  displayName: Use .NET 6
+  inputs:
+    version: 6.0.x
+    packageType: sdk
+    includePreviewVersions: false
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: restore
+    projects: |
+     **/Alza.LinkComposer.csproj
+     **/Alza.LinkComposer.AspNet.csproj
+     **/Alza.LinkComposer.AspNetCore.csproj
+     **/Alza.LinkComposer.SourceGenerator.csproj
+    vstsFeed: '1963a37b-9d02-4784-b7ae-d382bb9aa1a2'
+    noCache: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    projects: |
+     **/Alza.LinkComposer.csproj
+     **/Alza.LinkComposer.AspNet.csproj
+     **/Alza.LinkComposer.AspNetCore.csproj
+     **/Alza.LinkComposer.SourceGenerator.csproj
+    arguments: '--configuration Release'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
+  inputs:
+    command: pack
+    packagesToPack: '**/Alza.LinkComposer.csproj;**/Alza.LinkComposer.AspNet.csproj;**/Alza.LinkComposer.AspNetCore.csproj;**/Alza.LinkComposer.SourceGeneratror.csproj'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
+  inputs:
+    command: push
+    vstsFeed: '1963a37b-9d02-4784-b7ae-d382bb9aa1a2'
+    packagesToPush: '$(build.artifactstagingdirectory)/*.nupkg'
+    publishVstsFeed: '1963a37b-9d02-4784-b7ae-d382bb9aa1a2'
+    allowPackageConflicts: true
+  condition: and(succeeded(), notIn(variables['Build.Reason'], 'PullRequest'))

@@ -8,8 +8,8 @@
 		<Title>Alza.LinkComposer.AspNetCore</Title>
 		<Authors>Tomas Pelak</Authors>
 		<Description>Alza.LinkComposer.AspNetCore</Description>
-		<PackageProjectUrl>https://github.com/s3w3nofficial/link-composer</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/s3w3nofficial/link-composer</RepositoryUrl>
+		<PackageProjectUrl>https://betaalza.visualstudio.com/Alza.WebApi/_git/Alza.LinkComposer</PackageProjectUrl>
+		<RepositoryUrl>https://betaalza.visualstudio.com/Alza.WebApi/_git/Alza.LinkComposer</RepositoryUrl>
 		<IsPackable>true</IsPackable>
 		<PackageVersion>0.0.6-alfa</PackageVersion>
 		<PackageIcon>icon.png</PackageIcon>
