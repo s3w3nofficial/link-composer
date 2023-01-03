@@ -25,6 +25,8 @@ namespace Alza.LinkComposer.SourceGenerator
 
         public void AddMethod(string route, string name, IEnumerable<ParameterSyntax> parameters, int? apiVersion = null)
         {
+            var comment = ComponentFactory.CreateComment(route, _routeAttributeValue, apiVersion);
+
             var routeAttribute = ComponentFactory.CreateLinkComposerRouteAttribute(route, _routeAttributeValue, apiVersion);
 
             // if parameter is a custom type recreate it
@@ -38,7 +40,7 @@ namespace Alza.LinkComposer.SourceGenerator
             var newName = GetMethodName(name, cleanParameters);
 
             // create method
-            var method = ComponentFactory.CreateControllerLinkAction(routeAttribute, newName, cleanParameters);
+            var method = ComponentFactory.CreateControllerLinkAction(comment, routeAttribute, newName, cleanParameters);
 
             _methods.Add(method);
         }
