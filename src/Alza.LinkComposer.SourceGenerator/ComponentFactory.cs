@@ -19,7 +19,7 @@ namespace Alza.LinkComposer.SourceGenerator
                 attribute = attribute
                     .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
                         SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(apiVersion.Value))));
-            
+
             return SyntaxFactory.ClassDeclaration(className)
                 .WithModifiers(SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.SealedKeyword)))
                 .AddAttributeLists(SyntaxFactory.AttributeList(
@@ -41,6 +41,15 @@ namespace Alza.LinkComposer.SourceGenerator
                         SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(apiVersion.Value))));
 
             return SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(attribute));
+        }
+
+        public static string CreateComment(string route, string controllerRoute, int? apiVersion = null)
+        {
+            var comment = $" {string.Join("/", controllerRoute, route)}";
+
+            apiVersion ??= 1;
+
+            return comment.Replace("v{version:apiVersion}", $"v{apiVersion}");
         }
 
         public static EnumDeclarationSyntax GetEnumFromTypeSymbol(ITypeSymbol typeSymbol)
@@ -144,19 +153,86 @@ namespace Alza.LinkComposer.SourceGenerator
              );
         }
 
-        public static MethodDeclarationSyntax CreateControllerLinkAction(AttributeListSyntax attributes, string actionName, IEnumerable<ParameterSyntax> parameters)
+        public static MethodDeclarationSyntax CreateControllerLinkAction(string comment, AttributeListSyntax attributes, string actionName, IEnumerable<ParameterSyntax> parameters)
         {
             return SyntaxFactory.MethodDeclaration(
-                SyntaxFactory.List(new[] { attributes }),
-                SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword)),
-                SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
-                null,
-                SyntaxFactory.Identifier(actionName),
-                null,
-                SyntaxFactory.ParameterList(SyntaxFactory.SeparatedList(parameters)),
-                SyntaxFactory.List<TypeParameterConstraintClauseSyntax>(),
-                SyntaxFactory.Block(),
-                null);
+                SyntaxFactory.PredefinedType(
+                    SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                SyntaxFactory.Identifier(actionName))
+                .WithAttributeLists(
+                    SyntaxFactory.SingletonList(
+                        attributes
+                        .WithOpenBracketToken(
+                            SyntaxFactory.Token(
+                                SyntaxFactory.TriviaList(
+                                    SyntaxFactory.Trivia(
+                                        SyntaxFactory.DocumentationCommentTrivia(
+                                            SyntaxKind.SingleLineDocumentationCommentTrivia,
+                                            SyntaxFactory.List(
+                                                new XmlNodeSyntax[]{
+                                                    SyntaxFactory.XmlText()
+                                                    .WithTextTokens(
+                                                        SyntaxFactory.TokenList(
+                                                            SyntaxFactory.XmlTextLiteral(
+                                                                SyntaxFactory.TriviaList(
+                                                                    SyntaxFactory.DocumentationCommentExterior("///")),
+                                                                " ",
+                                                                " ",
+                                                                SyntaxFactory.TriviaList()))),
+                                                    SyntaxFactory.XmlExampleElement(
+                                                        SyntaxFactory.SingletonList<XmlNodeSyntax>(
+                                                            SyntaxFactory.XmlText()
+                                                            .WithTextTokens(
+                                                                SyntaxFactory.TokenList(
+                                                                    new []{
+                                                                        SyntaxFactory.XmlTextNewLine(
+                                                                            SyntaxFactory.TriviaList(),
+                                                                            "\n",
+                                                                            "\n",
+                                                                            SyntaxFactory.TriviaList()),
+                                                                        SyntaxFactory.XmlTextLiteral(
+                                                                            SyntaxFactory.TriviaList(
+                                                                                SyntaxFactory.DocumentationCommentExterior("    ///")),
+                                                                            comment,
+                                                                            comment,
+                                                                            SyntaxFactory.TriviaList()),
+                                                                        SyntaxFactory.XmlTextNewLine(
+                                                                            SyntaxFactory.TriviaList(),
+                                                                            "\n",
+                                                                            "\n",
+                                                                            SyntaxFactory.TriviaList()),
+                                                                        SyntaxFactory.XmlTextLiteral(
+                                                                            SyntaxFactory.TriviaList(
+                                                                                SyntaxFactory.DocumentationCommentExterior("    ///")),
+                                                                            " ",
+                                                                            " ",
+                                                                            SyntaxFactory.TriviaList())}))))
+                                                    .WithStartTag(
+                                                        SyntaxFactory.XmlElementStartTag(
+                                                            SyntaxFactory.XmlName(
+                                                                SyntaxFactory.Identifier("summary"))))
+                                                    .WithEndTag(
+                                                        SyntaxFactory.XmlElementEndTag(
+                                                            SyntaxFactory.XmlName(
+                                                                SyntaxFactory.Identifier("summary")))),
+                                                    SyntaxFactory.XmlText()
+                                                    .WithTextTokens(
+                                                        SyntaxFactory.TokenList(
+                                                            SyntaxFactory.XmlTextNewLine(
+                                                                SyntaxFactory.TriviaList(),
+                                                                "\n",
+                                                                "\n",
+                                                                SyntaxFactory.TriviaList())))})))),
+                                SyntaxKind.OpenBracketToken,
+                                SyntaxFactory.TriviaList()))))
+                .WithModifiers(
+                    SyntaxFactory.TokenList(
+                        SyntaxFactory.Token(SyntaxKind.PublicKeyword)))
+                .WithParameterList(
+                    SyntaxFactory.ParameterList(
+                        SyntaxFactory.SeparatedList(parameters)))
+                .WithBody(
+                    SyntaxFactory.Block());
         }
 
         public static TypeSyntax CreateTypeFromPropertySymbol(IPropertySymbol propertySymbol)
