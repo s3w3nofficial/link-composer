@@ -9,7 +9,7 @@
 		<PackageProjectUrl>https://betaalza.visualstudio.com/Alza.WebApi/_git/Alza.LinkComposer</PackageProjectUrl>
 		<RepositoryUrl>https://betaalza.visualstudio.com/Alza.WebApi/_git/Alza.LinkComposer</RepositoryUrl>
 		<IsPackable>true</IsPackable>
-		<PackageVersion>0.1.8-alfa</PackageVersion>
+		<PackageVersion>0.1.8</PackageVersion>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<PackageIcon>icon.png</PackageIcon>
 	</PropertyGroup>
