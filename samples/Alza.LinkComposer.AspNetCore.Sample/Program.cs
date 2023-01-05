@@ -1,5 +1,4 @@
 using Alza.LinkComposer.AspNetCore.Sample.Services;
-using Alza.LinkComposer.Configuration;
 using Alza.LinkComposer.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +13,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ILinkComposer, Alza.LinkComposer.AspNetCore.LinkComposer>();
 builder.Services.AddSingleton<ILinkComposerBaseUriFactory, LinkComposerBaseUriFactory>();
-
-builder.Services.Configure<LinkComposerSettings>(builder.Configuration.GetSection("LinkComposerSettings"));
 
 var app = builder.Build();
 

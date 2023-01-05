@@ -1,9 +1,7 @@
-﻿using Alza.LinkComposer.Configuration;
-using Alza.LinkComposer.Interfaces;
+﻿using Alza.LinkComposer.Interfaces;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Routing.Template;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
 using System.Web;
@@ -12,12 +10,10 @@ namespace Alza.LinkComposer.AspNetCore
 {
     public class LinkComposer : ILinkComposer
     {
-        private readonly IOptions<LinkComposerSettings> _options;
         private readonly TemplateBinderFactory _templateBinderFactory;
         private readonly ILinkComposerBaseUriFactory _linkComposerBaseUriFactory;
-        public LinkComposer(IOptions<LinkComposerSettings> options, TemplateBinderFactory templateBinderFactory, ILinkComposerBaseUriFactory linkComposerBaseUriFactory)
+        public LinkComposer(TemplateBinderFactory templateBinderFactory, ILinkComposerBaseUriFactory linkComposerBaseUriFactory)
         {
-            this._options = options ?? throw new ArgumentNullException(nameof(options));
             this._templateBinderFactory = templateBinderFactory ?? throw new ArgumentNullException(nameof(templateBinderFactory));
             this._linkComposerBaseUriFactory = linkComposerBaseUriFactory ?? throw new ArgumentNullException(nameof(linkComposerBaseUriFactory));
         }
@@ -73,8 +69,7 @@ namespace Alza.LinkComposer.AspNetCore
             var queryString =
                 $"?{HttpUtility.UrlDecode(string.Join("&", invocatitonInfo.ParameterValues.Select(kvp => $"{kvp.Key}={kvp.Value}")))}";
 
-            var config = this._options.Value.Routes[invocatitonInfo.ProjectName];
-            var baseUri = this._linkComposerBaseUriFactory.GetBaseUri(config.Url);
+            var baseUri = this._linkComposerBaseUriFactory.GetBaseUri(invocatitonInfo.ProjectName);
 
             invocatitonInfo.MethodTemplate ??= "";
             var routePattern = RoutePatternFactory.Parse(invocatitonInfo.MethodTemplate);

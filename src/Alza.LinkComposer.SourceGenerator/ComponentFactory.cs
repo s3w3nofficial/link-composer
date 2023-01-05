@@ -8,12 +8,12 @@ namespace Alza.LinkComposer.SourceGenerator
 {
     public static class ComponentFactory
     {
-        public static ClassDeclarationSyntax CreateControllerLinkClass(string className, string assemblyName, int? apiVersion = null)
+        public static ClassDeclarationSyntax CreateControllerLinkClass(string className, string projectName, int? apiVersion = null)
         {
             var attribute = SyntaxFactory.Attribute(
                 SyntaxFactory.IdentifierName(Constants.LinkComposerProjectInfo))
                     .AddArgumentListArguments(SyntaxFactory.AttributeArgument(
-                        SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(assemblyName))));
+                        SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal($"{Constants.AlzaLinkComposerLinksNamesapce}.{projectName}"))));
 
             if (apiVersion != null)
                 attribute = attribute

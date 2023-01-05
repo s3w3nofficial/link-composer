@@ -4,12 +4,18 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Services
 {
     public class LinkComposerBaseUriFactory : ILinkComposerBaseUriFactory
     {
-        public Uri GetBaseUri(Uri url)
+        public Uri GetBaseUri(string projectName)
         {
-            if (url is null)
-                throw new ArgumentNullException(nameof(url));
+            if (projectName is null)
+                throw new ArgumentNullException(nameof(projectName));
 
-            return new Uri(url.AbsoluteUri.Replace(".cz", ".sk"));
+            switch(projectName)
+            {
+                case "Alza.LinkComposer.Links.Sample":
+                    return new Uri("https://localhost:7009");
+                default:
+                    return new Uri("https://alza.cz");
+            }
         }
     }
 }

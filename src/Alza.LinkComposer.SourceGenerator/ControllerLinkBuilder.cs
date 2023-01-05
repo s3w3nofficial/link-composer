@@ -16,9 +16,9 @@ namespace Alza.LinkComposer.SourceGenerator
         private List<EnumDeclarationSyntax> _enums = new();
         private List<ClassDeclarationSyntax> _classes = new();
 
-        public ControllerLinkBuilder(string name, string assemblyName, string routeAttributeValue, SemanticModel semanticModel, int? apiVersion = null)
+        public ControllerLinkBuilder(string name, string projectName, string routeAttributeValue, SemanticModel semanticModel, int? apiVersion = null)
         {
-            _classDeclarationSyntax = ComponentFactory.CreateControllerLinkClass(name, assemblyName, apiVersion);
+            _classDeclarationSyntax = ComponentFactory.CreateControllerLinkClass(name, projectName, apiVersion);
             _routeAttributeValue = routeAttributeValue;
             _semanticModel = semanticModel;
         }

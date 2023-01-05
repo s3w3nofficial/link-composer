@@ -1,12 +1,10 @@
-﻿using Alza.LinkComposer.Configuration;
-using Alza.LinkComposer.Interfaces;
+﻿using Alza.LinkComposer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Internal;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.ObjectPool;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,11 +18,9 @@ namespace Alza.LinkComposer.AspNet
 {
     public class LinkComposer : ILinkComposer
     {
-        private readonly IOptions<LinkComposerSettings> _options;
         private readonly ILinkComposerBaseUriFactory _linkComposerBaseUriFactory;
-        public LinkComposer(IOptions<LinkComposerSettings> options, ILinkComposerBaseUriFactory linkComposerBaseUriFactory)
+        public LinkComposer(ILinkComposerBaseUriFactory linkComposerBaseUriFactory)
         {
-            this._options = options ?? throw new ArgumentNullException(nameof(options));
             this._linkComposerBaseUriFactory = linkComposerBaseUriFactory ?? throw new ArgumentNullException(nameof(linkComposerBaseUriFactory));
         }
 
@@ -79,8 +75,7 @@ namespace Alza.LinkComposer.AspNet
             var queryString =
                 $"?{HttpUtility.UrlDecode(string.Join("&", invocatitonInfo.ParameterValues.Select(kvp => $"{kvp.Key}={kvp.Value}")))}";
 
-            var config = this._options.Value.Routes[invocatitonInfo.ProjectName];
-            var baseUri = this._linkComposerBaseUriFactory.GetBaseUri(config.Url);
+            var baseUri = this._linkComposerBaseUriFactory.GetBaseUri(invocatitonInfo.ProjectName);
 
             if (invocatitonInfo.MethodTemplate is null)
                 invocatitonInfo.MethodTemplate = "";
