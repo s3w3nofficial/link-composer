@@ -19,9 +19,11 @@ namespace Alza.LinkComposer.AspNet
     public class LinkComposer : ILinkComposer
     {
         private readonly IOptions<LinkComposerSettings> _options;
-        public LinkComposer(IOptions<LinkComposerSettings> options)
+        private readonly ILinkComposerBaseUriFactory _linkComposerBaseUriFactory;
+        public LinkComposer(IOptions<LinkComposerSettings> options, ILinkComposerBaseUriFactory linkComposerBaseUriFactory)
         {
-            this._options = options;
+            this._options = options ?? throw new ArgumentNullException(nameof(options));
+            this._linkComposerBaseUriFactory = linkComposerBaseUriFactory ?? throw new ArgumentNullException(nameof(linkComposerBaseUriFactory));
         }
 
         public Uri Link<T>(Expression<Action<T>> method)
@@ -56,6 +58,7 @@ namespace Alza.LinkComposer.AspNet
                 $"?{HttpUtility.UrlDecode(string.Join("&", invocatitonInfo.ParameterValues.Select(kvp => $"{kvp.Key}={kvp.Value}")))}";
 
             var config = this._options.Value.Routes[invocatitonInfo.ProjectName];
+            var baseUri = this._linkComposerBaseUriFactory.GetBaseUri(config.Url);
 
             if (invocatitonInfo.MethodTemplate is null)
                 invocatitonInfo.MethodTemplate = "";
@@ -68,9 +71,10 @@ namespace Alza.LinkComposer.AspNet
             var controllerRouteTemplate = TemplateParser.Parse(invocatitonInfo.ControllerTemplate);
             var controllerBinder = new TemplateBinder(UrlEncoder.Default, pool, controllerRouteTemplate, null);
             var pathBase = controllerBinder.BindValues(new RouteValueDictionary(invocatitonInfo.ControllerRouteParameterValues));
+            var hostBase = baseUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Scheme, UriFormat.UriEscaped).TrimEnd('/');
 
-            var url = UriHelper.BuildAbsolute(config.Scheme,
-                new HostString(config.Host),
+            var url = UriHelper.BuildAbsolute(baseUri.Scheme,
+                new HostString(hostBase),
                 new PathString(pathBase),
                 new PathString(path),
                 new QueryString(invocatitonInfo.ParameterValues.Count > 0 ? queryString : ""));

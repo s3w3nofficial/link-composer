@@ -13,10 +13,12 @@ namespace Alza.LinkComposer.AspNetCore
     {
         private readonly IOptions<LinkComposerSettings> _options;
         private readonly TemplateBinderFactory _templateBinderFactory;
-        public LinkComposer(IOptions<LinkComposerSettings> options, TemplateBinderFactory templateBinderFactory)
+        private readonly ILinkComposerBaseUriFactory _linkComposerBaseUriFactory;
+        public LinkComposer(IOptions<LinkComposerSettings> options, TemplateBinderFactory templateBinderFactory, ILinkComposerBaseUriFactory linkComposerBaseUriFactory)
         {
-            this._options = options;
-            this._templateBinderFactory = templateBinderFactory;
+            this._options = options ?? throw new ArgumentNullException(nameof(options));
+            this._templateBinderFactory = templateBinderFactory ?? throw new ArgumentNullException(nameof(templateBinderFactory));
+            this._linkComposerBaseUriFactory = linkComposerBaseUriFactory ?? throw new ArgumentNullException(nameof(linkComposerBaseUriFactory));
         }
 
         public Uri Link<T>(Expression<Action<T>> method)
@@ -51,6 +53,7 @@ namespace Alza.LinkComposer.AspNetCore
                 $"?{HttpUtility.UrlDecode(string.Join("&", invocatitonInfo.ParameterValues.Select(kvp => $"{kvp.Key}={kvp.Value}")))}";
 
             var config = this._options.Value.Routes[invocatitonInfo.ProjectName];
+            var baseUri = this._linkComposerBaseUriFactory.GetBaseUri(config.Url);
 
             invocatitonInfo.MethodTemplate ??= "";
             var routePattern = RoutePatternFactory.Parse(invocatitonInfo.MethodTemplate);
@@ -60,9 +63,10 @@ namespace Alza.LinkComposer.AspNetCore
             var controllerRoutePattern = RoutePatternFactory.Parse(invocatitonInfo.ControllerTemplate);
             var controllerBinder = this._templateBinderFactory.Create(controllerRoutePattern);
             var pathBase = controllerBinder.BindValues(new RouteValueDictionary(invocatitonInfo.ControllerRouteParameterValues));
+            var hostBase = baseUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Scheme, UriFormat.UriEscaped).TrimEnd('/');
 
-            var url = UriHelper.BuildAbsolute(config.Scheme,
-                new HostString(config.Host),
+            var url = UriHelper.BuildAbsolute(baseUri.Scheme,
+                new HostString(hostBase),
                 new PathString(pathBase),
                 new PathString(path),
                 new QueryString(invocatitonInfo.ParameterValues.Count > 0 ? queryString : ""));

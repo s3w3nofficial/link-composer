@@ -1,12 +1,22 @@
 ﻿using Alza.LinkComposer.Configuration;
+using Alza.LinkComposer.Interfaces;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.Options;
 using Moq;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
 namespace Alza.LinkComposer.AspNetCore.Tests;
+
+public class LinkComposerBaseUriFactory : ILinkComposerBaseUriFactory
+{
+    public Uri GetBaseUri(Uri url)
+    {
+        return new Uri(url.AbsoluteUri.Replace(".cz", ".com"));
+    }
+}
 
 public class LinkComposerTests
 {
@@ -21,8 +31,7 @@ public class LinkComposerTests
                     "Alza.LinkComposer.AspNetCore.Sample", 
                     new LinkComposerRouteSettings
                     { 
-                        Host = "localhost",
-                        Scheme = "http",
+                        Url = new Uri("http://localhost:5900")
                     }
                 }
             }
@@ -33,7 +42,8 @@ public class LinkComposerTests
         var tbFactory = new Mock<TemplateBinderFactory>();
         tbFactory.Setup(x => x.Create(It.IsAny<RoutePattern>())).Returns(templateBinder.Object);
 
-        var linkComposer = new LinkComposer(options, tbFactory.Object);
+        var linkComposerBaseUriFactory = new LinkComposerBaseUriFactory();
+        var linkComposer = new LinkComposer(options, tbFactory.Object, linkComposerBaseUriFactory);
 
         var link = linkComposer.Link<HomePageControllerLink>(l => l.GetModel("1", new HomePageControllerLink.TestQueryModel
         {
