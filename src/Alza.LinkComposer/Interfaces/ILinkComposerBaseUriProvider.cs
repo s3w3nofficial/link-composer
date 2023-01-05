@@ -2,7 +2,7 @@
 
 namespace Alza.LinkComposer.Interfaces
 {
-    public interface ILinkComposerBaseUriFactory
+    public interface ILinkComposerBaseUriProvider
     {
         Uri GetBaseUri(string projectName);
     }

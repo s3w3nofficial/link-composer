@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Alza.LinkComposer.AspNetCore.Tests;
 
-public class LinkComposerBaseUriFactory : ILinkComposerBaseUriFactory
+public class LinkComposerBaseUriProvider : ILinkComposerBaseUriProvider
 {
     public Uri GetBaseUri(string projectName)
     {
@@ -25,8 +25,8 @@ public class LinkComposerTests
         var tbFactory = new Mock<TemplateBinderFactory>();
         tbFactory.Setup(x => x.Create(It.IsAny<RoutePattern>())).Returns(templateBinder.Object);
 
-        var linkComposerBaseUriFactory = new LinkComposerBaseUriFactory();
-        var linkComposer = new LinkComposer(tbFactory.Object, linkComposerBaseUriFactory);
+        var linkComposerBaseUriProvider = new LinkComposerBaseUriProvider();
+        var linkComposer = new LinkComposer(tbFactory.Object, linkComposerBaseUriProvider);
 
         var link = linkComposer.Link<HomePageControllerLink>(l => l.GetModel("1", new HomePageControllerLink.TestQueryModel
         {

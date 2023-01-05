@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ILinkComposer, Alza.LinkComposer.AspNetCore.LinkComposer>();
-builder.Services.AddSingleton<ILinkComposerBaseUriFactory, LinkComposerBaseUriFactory>();
+builder.Services.AddSingleton<ILinkComposerBaseUriProvider, LinkComposerBaseUriProvider>();
 
 var app = builder.Build();
 

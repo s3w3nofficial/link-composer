@@ -2,7 +2,7 @@
 
 namespace Alza.LinkComposer.AspNetCore.Sample.Services
 {
-    public class LinkComposerBaseUriFactory : ILinkComposerBaseUriFactory
+    public class LinkComposerBaseUriProvider : ILinkComposerBaseUriProvider
     {
         public Uri GetBaseUri(string projectName)
         {

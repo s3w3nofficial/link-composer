@@ -11,11 +11,11 @@ namespace Alza.LinkComposer.AspNetCore
     public class LinkComposer : ILinkComposer
     {
         private readonly TemplateBinderFactory _templateBinderFactory;
-        private readonly ILinkComposerBaseUriFactory _linkComposerBaseUriFactory;
-        public LinkComposer(TemplateBinderFactory templateBinderFactory, ILinkComposerBaseUriFactory linkComposerBaseUriFactory)
+        private readonly ILinkComposerBaseUriProvider _linkComposerBaseUriProvider;
+        public LinkComposer(TemplateBinderFactory templateBinderFactory, ILinkComposerBaseUriProvider linkComposerBaseUriProvider)
         {
             this._templateBinderFactory = templateBinderFactory ?? throw new ArgumentNullException(nameof(templateBinderFactory));
-            this._linkComposerBaseUriFactory = linkComposerBaseUriFactory ?? throw new ArgumentNullException(nameof(linkComposerBaseUriFactory));
+            this._linkComposerBaseUriProvider = linkComposerBaseUriProvider ?? throw new ArgumentNullException(nameof(linkComposerBaseUriProvider));
         }
 
         public Uri Link<T>(Expression<Action<T>> method)
@@ -69,7 +69,7 @@ namespace Alza.LinkComposer.AspNetCore
             var queryString =
                 $"?{HttpUtility.UrlDecode(string.Join("&", invocatitonInfo.ParameterValues.Select(kvp => $"{kvp.Key}={kvp.Value}")))}";
 
-            var baseUri = this._linkComposerBaseUriFactory.GetBaseUri(invocatitonInfo.ProjectName);
+            var baseUri = this._linkComposerBaseUriProvider.GetBaseUri(invocatitonInfo.ProjectName);
 
             invocatitonInfo.MethodTemplate ??= "";
             var routePattern = RoutePatternFactory.Parse(invocatitonInfo.MethodTemplate);

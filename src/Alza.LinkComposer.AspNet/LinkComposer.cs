@@ -18,10 +18,10 @@ namespace Alza.LinkComposer.AspNet
 {
     public class LinkComposer : ILinkComposer
     {
-        private readonly ILinkComposerBaseUriFactory _linkComposerBaseUriFactory;
-        public LinkComposer(ILinkComposerBaseUriFactory linkComposerBaseUriFactory)
+        private readonly ILinkComposerBaseUriProvider _linkComposerBaseUriProvider;
+        public LinkComposer(ILinkComposerBaseUriProvider linkComposerBaseUriProvider)
         {
-            this._linkComposerBaseUriFactory = linkComposerBaseUriFactory ?? throw new ArgumentNullException(nameof(linkComposerBaseUriFactory));
+            this._linkComposerBaseUriProvider = linkComposerBaseUriProvider ?? throw new ArgumentNullException(nameof(linkComposerBaseUriProvider));
         }
 
         public Uri Link<T>(Expression<Action<T>> method)
@@ -75,7 +75,7 @@ namespace Alza.LinkComposer.AspNet
             var queryString =
                 $"?{HttpUtility.UrlDecode(string.Join("&", invocatitonInfo.ParameterValues.Select(kvp => $"{kvp.Key}={kvp.Value}")))}";
 
-            var baseUri = this._linkComposerBaseUriFactory.GetBaseUri(invocatitonInfo.ProjectName);
+            var baseUri = this._linkComposerBaseUriProvider.GetBaseUri(invocatitonInfo.ProjectName);
 
             if (invocatitonInfo.MethodTemplate is null)
                 invocatitonInfo.MethodTemplate = "";

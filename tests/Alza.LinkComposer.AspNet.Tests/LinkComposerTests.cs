@@ -4,7 +4,7 @@ using System;
 
 namespace Alza.LinkComposer.AspNet.Tests
 {
-    public class LinkComposerBaseUriFactory : ILinkComposerBaseUriFactory
+    public class LinkComposerBaseUriProvider : ILinkComposerBaseUriProvider
     {
         public Uri GetBaseUri(string projectName)
         {
@@ -18,7 +18,7 @@ namespace Alza.LinkComposer.AspNet.Tests
         [TestMethod]
         public void Test()
         {
-            var linkComposerBaseUriFactory = new LinkComposerBaseUriFactory();
+            var linkComposerBaseUriFactory = new LinkComposerBaseUriProvider();
             var linkComposer = new LinkComposer(linkComposerBaseUriFactory);
 
             var link = linkComposer.Link<HomePageControllerLink>(l => l.GetModel("1", new HomePageControllerLink.TestQueryModel
