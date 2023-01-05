@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Linq.Expressions;
 using System.Web;
 
@@ -38,12 +39,32 @@ namespace Alza.LinkComposer.AspNetCore
         public Uri Link<T>(Expression<Action<T>> method, object additionalQueryParams) where T : LinkComposerController
         {
             var invocatitonInfo = Helpers.GetInvocation(method);
+
+            var json = JsonConvert.SerializeObject(additionalQueryParams);
+            var parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+
+            if (parameters is null)
+                throw new JsonSerializationException("could not serialize parameters");
+
+            foreach (var parameter in parameters)
+                invocatitonInfo.ParameterValues.Add(parameter.Key, parameter.Value);
+
             return GenerateLink<T>(invocatitonInfo);
         }
 
         public Uri Link<T>(Expression<Func<T, Task>> method, object additionalQueryParams) where T : LinkComposerController
         {
             var invocatitonInfo = Helpers.GetInvocation(method);
+
+            var json = JsonConvert.SerializeObject(additionalQueryParams);
+            var parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+
+            if (parameters is null)
+                throw new JsonSerializationException("could not serialize parameters");
+
+            foreach (var parameter in parameters)
+                invocatitonInfo.ParameterValues.Add(parameter.Key, parameter.Value);
+
             return GenerateLink<T>(invocatitonInfo);
         }
 

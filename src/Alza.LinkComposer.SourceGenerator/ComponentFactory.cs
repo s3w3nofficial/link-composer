@@ -289,14 +289,14 @@ namespace Alza.LinkComposer.SourceGenerator
         public static SyntaxList<UsingDirectiveSyntax> CreateUsings()
         {
             return SyntaxFactory.List<UsingDirectiveSyntax>()
-                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("System")))
-                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("System.Collections.Generic")))
-                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("Alza.LinkComposer.Attributes")));
+                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName(Constants.SystemNamespace)))
+                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName(Constants.SystemCollectionsGenericNamespace)))
+                .Add(SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName(Constants.AlzaLinkComposerAttributesNamespace)));
         }
 
         public static NamespaceDeclarationSyntax CreateNamespace(string projectName, SyntaxList<UsingDirectiveSyntax> usings, SyntaxList<MemberDeclarationSyntax> members)
         {
-            var identifier = projectName is null ? "Alza.LinkComposer.Links" : $"Alza.LinkComposer.Links.{projectName}";
+            var identifier = projectName is null ? Constants.AlzaLinkComposerLinksNamesapce : $"{Constants.AlzaLinkComposerLinksNamesapce}.{projectName}";
 
             return SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName(identifier),
                 SyntaxFactory.List<ExternAliasDirectiveSyntax>(),
@@ -339,10 +339,10 @@ namespace Alza.LinkComposer.SourceGenerator
             if (typeSymbol.ContainingSymbol is null)
                 return false;
 
-            if (typeSymbol.ContainingSymbol.ToString().StartsWith("System"))
+            if (typeSymbol.ContainingSymbol.ToString().StartsWith(Constants.SystemNamespace))
                 return true;
 
-            if (typeSymbol.ContainingSymbol.ToString().StartsWith("Microsoft.AspNetCore.Http"))
+            if (typeSymbol.ContainingSymbol.ToString().StartsWith(Constants.MicrosoftAspNetCoreHttpNamespace))
                 return true;
 
             return false;

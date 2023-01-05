@@ -14,7 +14,7 @@ public class LinkComposerBaseUriFactory : ILinkComposerBaseUriFactory
 {
     public Uri GetBaseUri(Uri url)
     {
-        return new Uri(url.AbsoluteUri.Replace(".cz", ".com"));
+        return new Uri(url.AbsoluteUri.Replace(".cz", ".sk"));
     }
 }
 

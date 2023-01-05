@@ -9,7 +9,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Services
             if (url is null)
                 throw new ArgumentNullException(nameof(url));
 
-            return new Uri(url.AbsoluteUri.Replace(".cz", ".com"));
+            return new Uri(url.AbsoluteUri.Replace(".cz", ".sk"));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Alza.LinkComposer.AspNet.Tests
     {
         public Uri GetBaseUri(Uri url)
         {
-            return new Uri(url.AbsoluteUri.Replace(".cz", ".com"));
+            return new Uri(url.AbsoluteUri.Replace(".cz", ".sk"));
         }
     }
 
