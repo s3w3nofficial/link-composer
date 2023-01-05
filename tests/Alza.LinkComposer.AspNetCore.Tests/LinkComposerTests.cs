@@ -1,39 +1,32 @@
-﻿using Alza.LinkComposer.Configuration;
+﻿using Alza.LinkComposer.Interfaces;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Routing.Template;
-using Microsoft.Extensions.Options;
 using Moq;
-using System.Collections.Generic;
+using System;
 using Xunit;
 
 namespace Alza.LinkComposer.AspNetCore.Tests;
+
+public class LinkComposerBaseUriProvider : ILinkComposerBaseUriProvider
+{
+    public Uri GetBaseUri(string projectName)
+    {
+        return new Uri("https://localhost:7009");
+    }
+}
 
 public class LinkComposerTests
 {
     [Fact]
     public void Tets()
     {
-        var options = Options.Create(new LinkComposerSettings
-        {
-            Routes = new Dictionary<string, LinkComposerRouteSettings>
-            {
-                { 
-                    "Alza.LinkComposer.AspNetCore.Sample", 
-                    new LinkComposerRouteSettings
-                    { 
-                        Host = "localhost",
-                        Scheme = "http",
-                    }
-                }
-            }
-        });
-
         var templateBinder = new Mock<TemplateBinder>(Mock.Of<TemplateBinder>(), null, null, null, null);
 
         var tbFactory = new Mock<TemplateBinderFactory>();
         tbFactory.Setup(x => x.Create(It.IsAny<RoutePattern>())).Returns(templateBinder.Object);
 
-        var linkComposer = new LinkComposer(options, tbFactory.Object);
+        var linkComposerBaseUriProvider = new LinkComposerBaseUriProvider();
+        var linkComposer = new LinkComposer(tbFactory.Object, linkComposerBaseUriProvider);
 
         var link = linkComposer.Link<HomePageControllerLink>(l => l.GetModel("1", new HomePageControllerLink.TestQueryModel
         {

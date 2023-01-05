@@ -1,32 +1,25 @@
-﻿using Alza.LinkComposer.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Alza.LinkComposer.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+using System;
 
 namespace Alza.LinkComposer.AspNet.Tests
 {
+    public class LinkComposerBaseUriProvider : ILinkComposerBaseUriProvider
+    {
+        public Uri GetBaseUri(string projectName)
+        {
+            return new Uri("https://localhost:7009");
+        }
+    }
+
     [TestClass]
     public class LinkComposerTests
     {
         [TestMethod]
         public void Test()
         {
-            var options = Options.Create(new LinkComposerSettings
-            {
-                Routes = new Dictionary<string, LinkComposerRouteSettings>
-            {
-                {
-                    "Alza.LinkComposer.AspNetCore.Sample",
-                    new LinkComposerRouteSettings
-                    {
-                        Host = "localhost",
-                        Scheme = "http",
-                    }
-                }
-            }
-            });
-
-            var linkComposer = new LinkComposer(options);
+            var linkComposerBaseUriFactory = new LinkComposerBaseUriProvider();
+            var linkComposer = new LinkComposer(linkComposerBaseUriFactory);
 
             var link = linkComposer.Link<HomePageControllerLink>(l => l.GetModel("1", new HomePageControllerLink.TestQueryModel
             {

@@ -1,7 +1,5 @@
 ﻿using Alza.LinkComposer.Interfaces;
-using Alza.LinkComposer.Links.Monolith;
 using Microsoft.AspNetCore.Mvc;
-using static Alza.LinkComposer.AspNetCore.Sample.Controllers.Wrapper;
 
 namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
 {
@@ -19,10 +17,20 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         [HttpGet("navigation", Name = nameof(Navigation))]
         public object Navigation(string test = "ahoj")
         {
+            // https://www.alza.cz/api/legacy/catalog/v14/product/5820237?pgrik=mAAI&ucik=HAAA&country=cz
             return new
             {
                 Test = test,
-                Navigation = _linkComposer.Link<HomePageControllerLink>(x => x.Navigation("ahoj")),
+                Navigation = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.Navigation("ahoj")),
+                Alza = _linkComposer.Link<Links.Monolith.LegacyCommodityV2ControllerLink>(x => x.GetProductV14(5820237, new Links.Monolith.LegacyCommodityV2ControllerLink.ProductDetailRequestModel
+                {
+                    ElectronicContentOnly = false,
+                }), new
+                {
+                    pgrik = "mAAI",
+                    ucik = "HAAA",
+                    country = "cz"
+                })
             };
         }
 
@@ -31,7 +39,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                Get = _linkComposer.Link<HomePageControllerLink>(x => x.Get(id))
+                Get = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.Get(id))
             };
         }
 
@@ -40,7 +48,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                Get = _linkComposer.Link<HomePageControllerLink>(x => x.GetArray(ids))
+                Get = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.GetArray(ids))
             };
         }
 
@@ -49,7 +57,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                GetByGUID = _linkComposer.Link<HomePageControllerLink>(x => x.GetByGUID(id))
+                GetByGUID = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.GetByGUID(id))
             };
         }
 
@@ -58,7 +66,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                GetModel = _linkComposer.Link<HomePageControllerLink>(x => x.GetModel(id, new HomePageControllerLink.TestQueryModel
+                GetModel = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.GetModel(id, new Links.Sample.HomePageControllerLink.TestQueryModel
                 {
                     Limit = 10,
                     Offset = 20
@@ -71,7 +79,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                GetModel = _linkComposer.Link<HomePageControllerLink>(x => x.GetModel2(id, new HomePageControllerLink.TestQueryModel
+                GetModel = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.GetModel2(id, new Links.Sample.HomePageControllerLink.TestQueryModel
                 {
                     Limit = 10,
                     Offset = 20
@@ -84,8 +92,8 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                GetModel = _linkComposer.Link<HomePageControllerLink>(x => x.GetModel3(id, new[] {
-                    new HomePageControllerLink.TestQueryModel
+                GetModel = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.GetModel3(id, new[] {
+                    new Links.Sample.HomePageControllerLink.TestQueryModel
                     {
                         Limit = 10,
                         Offset = 20
@@ -99,7 +107,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                GetModel = _linkComposer.Link<HomePageControllerLink>(x => x.GetModel4(id, names))
+                GetModel = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.GetModel4(id, names))
             };
         }
 
@@ -108,7 +116,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.PostBody(new HomePageControllerLink.TestQueryModel
+                PostBody = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.PostBody(new Links.Sample.HomePageControllerLink.TestQueryModel
                 {
 
                 }))
@@ -120,7 +128,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.PostPath(path))
+                PostBody = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.PostPath(path))
             };
         }
 
@@ -129,16 +137,16 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.SameParams(name))
+                PostBody = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.SameParams(name))
             };
         }
 
-        [HttpPost("sameParams/{token}", Name = nameof(SameParams))]
+        [HttpPost("sameParams2/{token}", Name = "SameParams2")]
         public object SameParams(string token, [FromBody] TestQueryModel text)
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.SameParams1(token))
+                PostBody = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.SameParams1(token))
             };
         }
 
@@ -147,7 +155,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.RouteParams(new HomePageControllerLink.TestQueryModel
+                PostBody = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.RouteParams(new Links.Sample.HomePageControllerLink.TestQueryModel
                 {
 
                 }))
@@ -159,16 +167,7 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
         {
             return new
             {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.Enums(HomePageControllerLink.TestEnumQueryModel.a))
-            };
-        }
-
-        [HttpPost("Enums", Name = nameof(Enums2))]
-        public object Enums2([FromQuery] TestEnum? model)
-        {
-            return new
-            {
-                PostBody = _linkComposer.Link<HomePageControllerLink>(x => x.Enums2(HomePageControllerLink.TestEnum.A))
+                PostBody = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.Enums(Links.Sample.HomePageControllerLink.TestEnumQueryModel.a))
             };
         }
     }

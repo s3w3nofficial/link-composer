@@ -4,7 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<ProjectName>Monolith</ProjectName>
+		<ProjectName>Sample</ProjectName>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,6 +19,7 @@
 	-->
 
 	<ItemGroup>
+		<PackageReference Include="Alza.LinkComposer.Links.Monolith" Version="0.0.6-alfa" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 	</ItemGroup>

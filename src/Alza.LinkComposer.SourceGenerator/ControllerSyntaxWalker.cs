@@ -45,7 +45,7 @@ namespace Alza.LinkComposer.SourceGenerator
                     apiVersion = version;
             }
 
-            _controllerLinkBuilder = new ControllerLinkBuilder(className, _context.Compilation.AssemblyName, controllerRouteAttributeValue, _semanticModel, apiVersion);
+            _controllerLinkBuilder = new ControllerLinkBuilder(className, _projectName, controllerRouteAttributeValue, _semanticModel, apiVersion);
 
             base.VisitClassDeclaration(node);
 
