@@ -40,7 +40,7 @@ steps:
   displayName: 'dotnet pack'
   inputs:
     command: pack
-    packagesToPack: '**/Alza.LinkComposer.csproj;**/Alza.LinkComposer.AspNet.csproj;**/Alza.LinkComposer.AspNetCore.csproj;**/Alza.LinkComposer.SourceGeneratror.csproj'
+    packagesToPack: '**/Alza.LinkComposer.csproj;**/Alza.LinkComposer.AspNet.csproj;**/Alza.LinkComposer.AspNetCore.csproj;**/Alza.LinkComposer.SourceGenerator.csproj'
 
 - task: NuGetCommand@2
   displayName: 'NuGet push'
