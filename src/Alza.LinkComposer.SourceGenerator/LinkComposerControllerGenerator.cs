@@ -38,7 +38,10 @@ namespace Alza.LinkComposer.SourceGenerator
 
                 var root = syntaxTree.GetRoot();
 
-                new ControllerSyntaxWalker(context, model, projectName).Visit(root);
+                new ControllerSyntaxWalker((string name, string source) =>
+                {
+                    context.AddSource(name, source);
+                }, model, projectName).Visit(root);
             }
         }
     }

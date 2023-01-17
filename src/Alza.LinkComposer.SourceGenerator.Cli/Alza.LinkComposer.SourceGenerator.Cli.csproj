@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Title>Alza.LinkComposer.SourceGenerator.Cli</Title>
+		<Authors>Tomas Pelak</Authors>
+		<Description>Cli used for manualy source generating links</Description>
+		<PackageProjectUrl>https://betaalza.visualstudio.com/Alza.WebApi/_git/Alza.LinkComposer</PackageProjectUrl>
+		<RepositoryUrl>https://betaalza.visualstudio.com/Alza.WebApi/_git/Alza.LinkComposer</RepositoryUrl>
+		<IsPackable>true</IsPackable>
+		<PackageVersion>0.0.1</PackageVersion>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>link-composer</ToolCommandName>
+		<PackageIcon>icon.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Cocona" Version="2.1.0" />
+		<PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.4.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Alza.LinkComposer.SourceGenerator\Alza.LinkComposer.SourceGenerator.csproj" />
+	</ItemGroup>
+
+</Project>

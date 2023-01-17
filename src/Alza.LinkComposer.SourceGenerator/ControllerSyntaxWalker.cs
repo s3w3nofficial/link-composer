@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Linq;
 using System.Threading;
 
@@ -10,13 +11,13 @@ namespace Alza.LinkComposer.SourceGenerator
     {
         private ControllerLinkBuilder _controllerLinkBuilder;
 
-        private readonly GeneratorExecutionContext _context;
+        private readonly Action<string, string> _addSource;
         private readonly SemanticModel _semanticModel;
         private readonly string _projectName;
 
-        public ControllerSyntaxWalker(GeneratorExecutionContext context, SemanticModel semanticModel, string projectName)
+        public ControllerSyntaxWalker(Action<string, string> addSource, SemanticModel semanticModel, string projectName)
         {
-            _context = context;
+            _addSource = addSource;
             _semanticModel = semanticModel;
             _projectName = projectName;
         }
@@ -55,7 +56,7 @@ namespace Alza.LinkComposer.SourceGenerator
             var members = ComponentFactory.CreateMembers(controllerLink);
             var ns = ComponentFactory.CreateNamespace(_projectName, usings, members);
 
-            _context.AddSource($"{className}.g.cs", ns.ToFullString());
+            _addSource($"{className}.g.cs", ns.ToFullString());
         }
 
         public override void VisitMethodDeclaration(MethodDeclarationSyntax node)

@@ -22,6 +22,7 @@ steps:
      **/Alza.LinkComposer.AspNet.csproj
      **/Alza.LinkComposer.AspNetCore.csproj
      **/Alza.LinkComposer.SourceGenerator.csproj
+     **/Alza.LinkComposer.SourceGenerator.Cli.csproj
     vstsFeed: '1963a37b-9d02-4784-b7ae-d382bb9aa1a2'
     noCache: true
 
@@ -33,6 +34,7 @@ steps:
      **/Alza.LinkComposer.AspNet.csproj
      **/Alza.LinkComposer.AspNetCore.csproj
      **/Alza.LinkComposer.SourceGenerator.csproj
+     **/Alza.LinkComposer.SourceGenerator.Cli.csproj
     arguments: '--configuration Release'
 
 
@@ -40,7 +42,7 @@ steps:
   displayName: 'dotnet pack'
   inputs:
     command: pack
-    packagesToPack: '**/Alza.LinkComposer.csproj;**/Alza.LinkComposer.AspNet.csproj;**/Alza.LinkComposer.AspNetCore.csproj;**/Alza.LinkComposer.SourceGenerator.csproj'
+    packagesToPack: '**/Alza.LinkComposer.csproj;**/Alza.LinkComposer.AspNet.csproj;**/Alza.LinkComposer.AspNetCore.csproj;**/Alza.LinkComposer.SourceGenerator.csproj;**/Alza.LinkComposer.SourceGenerator.Cli.csproj'
 
 - task: NuGetCommand@2
   displayName: 'NuGet push'
