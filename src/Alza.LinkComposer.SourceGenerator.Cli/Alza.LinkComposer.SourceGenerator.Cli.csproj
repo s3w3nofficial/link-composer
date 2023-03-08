@@ -14,7 +14,6 @@
 		<PackageVersion>0.0.1</PackageVersion>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>link-composer</ToolCommandName>
-		<PackageIcon>icon.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
