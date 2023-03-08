@@ -1,10 +1,12 @@
-﻿using System.Data;
+﻿using Alza.LinkComposer.AspNetCore.Sample.Models;
+using System.Data;
 
 namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
 {
-    public class TestQueryModel
+    public class TestQueryModel : BaseRequestModel
     {
         public int? Limit { get; set; }
+
         public int Offset { get; set; }
 
         public IEnumerable<int> Tests { get; set; }

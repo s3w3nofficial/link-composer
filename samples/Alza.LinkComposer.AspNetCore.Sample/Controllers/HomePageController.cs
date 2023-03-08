@@ -82,7 +82,8 @@ namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
                 GetModel = _linkComposer.Link<Links.Sample.HomePageControllerLink>(x => x.GetModel2(id, new Links.Sample.HomePageControllerLink.TestQueryModel
                 {
                     Limit = 10,
-                    Offset = 20
+                    Offset = 20,
+                    CountryCode = "cz"
                 }))
             };
         }

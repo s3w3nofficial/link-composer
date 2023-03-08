@@ -34,7 +34,7 @@ namespace Alza.LinkComposer.SourceGenerator
 
             // this removes all the attributes and other unused info
             var cleanParameters = parameters
-                .Select(ap => ComponentFactory.CreateCleanParameter(ap));
+                .Select(ComponentFactory.CreateCleanParameter);
 
             // add number behind method if method with same name and parameters exists
             var newName = GetMethodName(name, cleanParameters);
@@ -86,6 +86,9 @@ namespace Alza.LinkComposer.SourceGenerator
                     var members = new Dictionary<ITypeSymbol, MemberDeclarationSyntax>();
                     var types = new Queue<ITypeSymbol>();
                     types.Enqueue(semanticType);
+
+                    if (ComponentFactory.IsTypeSymbolDerived(semanticType))
+                        types.Enqueue(semanticType.BaseType);
 
                     while (types.Count > 0)
                     {
