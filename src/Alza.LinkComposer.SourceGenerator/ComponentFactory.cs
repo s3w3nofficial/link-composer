@@ -137,6 +137,13 @@ namespace Alza.LinkComposer.SourceGenerator
                 .WithMembers(pmMembers)
                 .WithModifiers(SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword)));
 
+            if (IsTypeSymbolDerived(typeSymbol))
+                cls = cls.WithBaseList(
+                    SyntaxFactory.BaseList(
+                        SyntaxFactory.SingletonSeparatedList<BaseTypeSyntax>(
+                            SyntaxFactory.SimpleBaseType(
+                                SyntaxFactory.IdentifierName(typeSymbol.BaseType.Name)))));
+
             return (cls, additionalClasses);
         }
 
@@ -332,6 +339,11 @@ namespace Alza.LinkComposer.SourceGenerator
         {
             return typeSymbol.TypeKind is TypeKind.Enum
                 && !IsSystemNamespace(typeSymbol);
+        }
+        
+        public static bool IsTypeSymbolDerived(ITypeSymbol typeSymbol)
+        {
+            return typeSymbol.BaseType != null;
         }
 
         public static bool IsSystemNamespace(ITypeSymbol typeSymbol)
