@@ -87,9 +87,6 @@ namespace Alza.LinkComposer.SourceGenerator
                     var types = new Queue<ITypeSymbol>();
                     types.Enqueue(semanticType);
 
-                    if (ComponentFactory.IsTypeSymbolDerived(semanticType))
-                        types.Enqueue(semanticType.BaseType);
-
                     while (types.Count > 0)
                     {
                         var current = types.Dequeue();
@@ -112,6 +109,9 @@ namespace Alza.LinkComposer.SourceGenerator
 
                             continue;
                         }
+
+                        if (ComponentFactory.IsTypeSymbolDerived(current))
+                            types.Enqueue(current.BaseType);
 
                         var res = ComponentFactory.GetClassFromTypeSymbol(current);
 

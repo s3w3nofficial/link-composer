@@ -3,7 +3,7 @@ using System.Data;
 
 namespace Alza.LinkComposer.AspNetCore.Sample.Controllers
 {
-    public class TestQueryModel : BaseRequestModel
+    public class TestQueryModel : CacheKeyRequestModel 
     {
         public int? Limit { get; set; }
 

@@ -343,7 +343,7 @@ namespace Alza.LinkComposer.SourceGenerator
         
         public static bool IsTypeSymbolDerived(ITypeSymbol typeSymbol)
         {
-            return typeSymbol.BaseType != null;
+            return typeSymbol.BaseType != null && typeSymbol.BaseType.Name != "Object";
         }
 
         public static bool IsSystemNamespace(ITypeSymbol typeSymbol)
